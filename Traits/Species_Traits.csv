@@ -1,0 +1,411 @@
+﻿PLANTS_Accepted_Name,SPCD,Symbol,Origin,Height_m,Height_max,Deciduous,Wood_Density,Myco_Group,Leaf_Thickness,Family,Nfixer,Seed_wt_avg_Kew_or_other_g_per_1000
+Acrocomia media,6023,ACME2,N,12,12,E,No data,AM + NM,Coriaceous,Arecaceae,no,
+Adelia ricinella,6026,ADRI,N,9,13.1,D,0.722,AM,No data,Euphorbiaceae,no,
+Adenanthera pavonina,6028,ADPA,I,12,19.8,D,0.681,AM,No data,Fabaceae,yes,234
+Albizia carbonaria,6056,ALCA8,I,21,21,D,0.43,AM,No data,Fabaceae,yes,
+Albizia lebbeck,6059,ALLE,I,12,16.8,D,0.597,No data,Chartaceous,Fabaceae,yes,123
+Albizia procera,6060,ALPR,I,18,22.9,D,0.579,AM,Chartaceous to Subcoriaceous,Fabaceae,yes,36
+Alchornea latifolia,6064,ALLA,N,15,22.3,E,0.417,AM,Subcoriaceous,Euphorbiaceae,no,34
+Alchorneopsis floribunda,6066,ALFL3,N,15,15,E,0.427,No data,Chartaceous,Euphorbiaceae,no,
+Allophylus crassinervis,6080,ALCR9,N,6.6,6.6,E,No data,No data,Coriaceous,Sapindaceae,no,
+Allophylus racemosus,6082,ALRA,N,9,9,D,No data,No data,Chartaceous,Sapindaceae,no,18.55
+Alsophila portoricensis,6093,ALPO7,N,6,8.5,E,No data,AM + NM,No data,Cyatheaceae,no,
+Amyris balsamifera,6103,AMBA2,N,6,13.7,E,1.08,AM,Coriaceous,Rutaceae,no,
+Amyris elemifera,852,AMEL,N,6,8.5,E,0.98,AM,Subcoriaceous,Rutaceae,no,63.1696
+Anacardium,6106,ANACA,N,10,13.4,E,No data,No data,Coriaceous,Anacardiaceae,no,
+Anadenanthera peregrina,6111,ANPE13,N,12,16.8,D,0.883,No data,Chartaceous,Fabaceae,yes,
+Andira inermis,6114,ANIN,N,20,26.5,D,0.621,EM,Chartaceous,Fabaceae,yes,792
+Annona muricata,6128,ANMU2,N,6,10.7,E,0.36,AM,Subcoriaceous,Annonaceae,no,396
+Annona reticulata,6129,ANRE,I,7,8.8,D,0.55,AM,Chartaceous,Annonaceae,no,194.7
+Annona squamosa,6131,ANSQ,N,6,6.1,D,0.618,AM,Chartaceous,Annonaceae,no,267
+Antirhea acutata,6146,ANAC4,N,5,6.4,E,No data,AM,Subcoriaceous,Rubiaceae,no,
+Antirhea obtusifolia,6150,ANOB2,N,15,15,E,0.56,AM,Subcoriaceous,Rubiaceae,no,
+Ardisia obovata,6164,AROB2,N,15,15,E,No data,AM,Coriaceous,Myrsinaceae,no,
+Ardisia solanacea,6165,ARSO,I,4.5,6.4,E,0.62,No data,Coriaceous,Myrsinaceae,no,
+Artocarpus altilis,6171,ARAL7,I,25,25,E,0.403,AM,Coriaceous,Moraceae,no,5898
+Artocarpus heterophyllus,6173,ARHE2,I,15,15,E,0.492,No data,Coriaceous,Moraceae,no,10062
+Avicennia germinans,986,AVGE,N,12,15.2,E,0.756,AM,Coriaceous,Verbenaceae,no,10120
+Banara portoricensis,6217,BAPO,N,11,11.9,E,No data,No data,Subcoriaceous,Flacourtiaceae,no,
+Bauhinia multinervia,6227,BAMU3,I,15,15,E,No data,AM,No data,Fabaceae,no,244.01
+Bixa orellana,6238,BIOR,I,4.5,4.5,E,0.36,No data,Chartaceous,Bixaceae,no,25
+Bocconia frutescens,6247,BOFR2,N,3,11,E,No data,No data,Subcoriaceous,Papaveraceae,no,17.9147
+Bourreria succulenta,6255,BOSU2,N,7.5,15.8,E,0.655,AM,Subcoriaceous,Boraginaceae,no,16.4756
+Bourreria virgata,6257,BOVI2,N,7.5,7.5,E,No data,AM,Subcoriaceous,Boraginaceae,no,21.0532
+Brunellia comocladiifolia,6270,BRCO6,N,7,11,E,No data,No data,Coriaceous,Brunelliaceae,no,
+Buchenavia tetraphylla,6283,BUTE4,N,24,24,D,0.619,AM,Subcoriaceous,Combretaceae,no,586.04
+Bucida buceras,6284,BUBU,N,18,24.1,DE,0.811,AM,Subcoriaceous,Combretaceae,no,38
+Bursera simaruba,854,BUSI,N,12,18.6,D,0.301,AM + NM,Subcoriaceous,Burseraceae,no,117
+Byrsonima crassifolia,6308,BYCR,N,7.5,7.5,E,0.584,AM,Coriaceous,Malpighiaceae,no,2.02
+Byrsonima lucida,6311,BYLU,N,8,10.4,E,0.521,AM,Chartaceous,Malpighiaceae,no,459.1228
+Byrsonima spicata,6313,BYSP,N,18,21.9,E,0.615,AM,Chartaceous,Malpighiaceae,no,108
+Byrsonima wadsworthii,6315,BYWA,N,15,15.8,E,No data,AM,Subcoriaceous,Malpighiaceae,no,
+Caesalpinia pulcherrima,6319,CAPU13,I,5,7,E,0.84,No data,Subcoriaceous,Fabaceae,no,146.3
+Calophyllum antillanum,6338,CAAN22,N,19,24.1,E,0.518,AM,Subcoriaceous,Clusiaceae,no,1000
+Calyptranthes pallens,6354,CAPA8,N,6,6,E,No data,No data,Subcoriaceous,Myrtaceae,no,
+Canella winterana,6380,CAWI,N,6,7.9,E,0.95,No data,Coriaceous,Canellaceae,no,
+Capparis baducca,6384,CABA2,N,6,7.3,E,0.48,NM,Subcoriaceous,Capparaceae,no,120
+Capparis cynophallophora,6386,CACY,N,6,9.1,E,No data,NM,Subcoriaceous,Capparaceae,no,54
+Capparis flexuosa,6387,CAFL2,N,8,8,E,0.688,NM,Subcoriaceous,Capparaceae,no,67.0056
+Capparis hastata,6389,CAHA9,N,5,6.4,E,0.68,NM,Subcoriaceous,Capparaceae,no,
+Capparis indica,6390,CAIN5,N,5,6.7,E,0.68,NM,Subcoriaceous,Capparaceae,no,
+Carapa guianensis,6393,CAGU6,I,55,55,DE,0.53,No data,Coriaceous,Meliaceae,no,17696
+Carica papaya,6395,CAPA23,I,6,7,E,No data,AM,Subcoriaceous,Caricaceae,no,23
+Casearia aculeata,6402,CAAC3,N,9,9,E,0.66,AM,Subcoriaceous,Flacourtiaceae,no,23
+Casearia arborea,6403,CAAR8,N,9,18.3,E,0.582,AM,Subcoriaceous,Flacourtiaceae,no,1.65
+Casearia decandra,6406,CADE11,N,4.5,12.2,D,0.664,AM,Subcoriaceous,Flacourtiaceae,no,88.1
+Casearia guianensis,6407,CAGU2,N,4.5,17.1,E,0.735,AM,Chartaceous,Flacourtiaceae,no,
+Casearia sylvestris,6410,CASY2,N,4.5,25,E,0.679,AM,Subcoriaceous,Flacourtiaceae,no,3
+Cassia fistula,6415,CAFI3,N,15,15,D,0.798,AM,Chartaceous,Fabaceae,no,666
+Cassine xylocarpa,6425,CAXY,N,10,10,E,No data,AM,Coriaceous,Celastraceae,no,1973.456352
+Cassipourea guianensis,6427,CAGU3,N,6,6,E,0.82,No data,Chartaceous,Rhizophoraceae,no,
+Castilla elastica,6430,CAEL5,I,21,21,E,0.568,AM,Chartaceous,Moraceae,no,568.18
+Casuarina equisetifolia,6434,CAEQ,I,30,30,E,0.809,EM,Coriaceous,Casuarinaceae,yes,4
+Casuarina lepidophloia,857,CALE28,I,18,18,E,0.776,No data,Coriaceous,Casuarinaceae,yes,9.01
+Cecropia schreberiana,6443,CESC9,N,21,29.6,E,0.289,AM,Subcoriaceous,Cecropiaceae,no,0.6
+Cedrela odorata,6445,CEOD,N,30,30,D,0.447,No data,Chartaceous,Meliaceae,no,17
+Ceiba pentandra,6449,CEPE2,N,24,24,D,0.305,AM,Chartaceous,Bombacaceae,no,59
+Cestrum diurnum,6474,CEDI6,I,4.5,4.5,E,No data,AM,Subcoriaceous,Solanaceae,no,
+Cestrum laurifolium,6475,CELA2,N,6,6.7,E,No data,AM,Subcoriaceous,Solanaceae,no,
+Chionanthus compactus,6520,CHCO12,N,10.5,11.6,E,No data,No data,Subcoriaceous,Oleaceae,no,
+Chionanthus domingensis,6521,CHDO4,N,18,18,E,0.865,No data,Subcoriaceous,Oleaceae,no,
+Chrysobalanus icaco,6535,CHIC,N,3,7.6,E,0.753,AM,Coriaceous,Chrysobalanaceae,no,2114.8
+Chrysophyllum argenteum,6539,CHAR6,N,7.5,8.2,E,0.784,AM,Subcoriaceous,Sapotaceae,no,236.5
+Chrysophyllum cainito,6541,CHCA10,N,12,18.6,E,0.655,AM,Subcoriaceous,Sapotaceae,no,210
+Chrysophyllum pauciflorum,6543,CHPA31,N,7.5,15.5,E,No data,AM,Subcoriaceous,Sapotaceae,no,
+Cinnamomum camphora,858,CICA,I,7.5,20.4,E,0.487,No data,Subcoriaceous,Lauraceae,no,108
+Cinnamomum elongatum,6559,CIEL2,N,30,30,E,0.56,AM,Subcoriaceous,Lauraceae,no,
+Cinnamomum montanum,6560,CIMO3,N,19,19,E,No data,AM,Chartaceous,Lauraceae,no,
+Citharexylum caudatum,6565,CICA8,N,9,9,E,No data,AM,Subcoriaceous,Verbenaceae,no,
+Citharexylum spinosum,859,CISP3,N,12,12,E,0.684,AM,Coriaceous,Verbenaceae,no,73.0957
+Citharexylum spinosum,6567,CISP3,N,12,12,E,0.684,AM,Coriaceous,Verbenaceae,no,73.0957
+Citrus ×aurantiifolia,6573,CIAU7,I,6,6,E,0.52,No data,Coriaceous,Rutaceae,no,77.82
+Citrus ×limon,6575,CILI5,I,6,6,E,0.52,AM,Coriaceous,Rutaceae,no,118.04
+Citrus ×paradisi,6576,CIPA3,I,6,13.1,E,0.52,AM,Subcoriaceous,Rutaceae,no,
+Citrus ×sinensis,6577,CISI3,I,9,17.4,E,0.78,AM,Subcoriaceous,Rutaceae,no,30.59
+Clusia clusioides,6646,CLCL2,N,12,14.6,E,0.9,AM,Coriaceous,Clusiaceae,no,
+Clusia rosea,6651,CLRO,N,18,21.3,E,0.618,AM,Coriaceous,Clusiaceae,no,11.3808
+Coccoloba diversifolia,863,CODI8,N,9,16.2,E,0.763,EM,Coriaceous,Polygonaceae,no,
+Coccoloba krugii,6660,COKR,N,6,6,E,No data,EM,Coriaceous,Polygonaceae,no,22.9532
+Coccoloba microstachya,6661,COMI,N,6,9.1,E,0.733,EM,Subcoriaceous,Polygonaceae,no,37
+Coccoloba pubescens,6663,COPU,N,21,21,E,1,EM,Coriaceous,Polygonaceae,no,27.144
+Coccoloba pyrifolia,6664,COPY,N,7.5,11.6,E,No data,No data,Subcoriaceous,Polygonaceae,no,43.6
+Coccoloba rugosa,6665,CORU4,N,9,9,E,No data,EM,Coriaceous,Polygonaceae,no,
+Coccoloba sintenisii,6666,COSI2,N,10,10,E,No data,EM,Coriaceous,Polygonaceae,no,
+Coccoloba swartzii,6668,COSW,N,12,12,E,0.7,No data,Coriaceous,Polygonaceae,no,
+Coccoloba uvifera,6670,COUV,N,9,9,E,0.7,EM,Coriaceous,Polygonaceae,no,632
+Coccoloba venosa,6671,COVE,N,9,9,D,No data,EM,Chartaceous,Polygonaceae,no,14.2288557
+Coccothrinax barbadensis,6673,COBA3,N,15,15,E,No data,AM + NM,Coriaceous,Arecaceae,no,
+Cochlospermum vitifolium,6679,COVI,I,7.5,7.5,D,0.218,AM,Chartaceous,Bixaceae,no,28
+Cocos nucifera,908,CONU,I,18,18,E,0.539,AM,Coriaceous,Arecaceae,no,576800
+Coffea arabica,6684,COAR2,I,4.5,9.4,E,0.62,AM,Subcoriaceous,Rubiaceae,no,188.3
+Coffea liberica,6686,COLI8,I,9,12.2,E,No data,AM,Coriaceous,Rubiaceae,no,252.6
+Cojoba arborea,6688,COAR9,N,18,18,E,0.655,No data,No data,Fabaceae,yes,850
+Colubrina arborescens,6693,COAR3,N,4.5,6.1,E,0.7,AM,Subcoriaceous,Rhamnaceae,no,15.075
+Comocladia dodonaea,6705,CODO,N,3,6.1,E,No data,AM,Subcoriaceous,Anacardiaceae,no,
+Comocladia glabra,6706,COGL4,N,6,6,E,0.76,AM,Coriaceous,Anacardiaceae,no,
+Conocarpus erectus,987,COER2,N,6,13.7,E,0.832,AM,Subcoriaceous,Combretaceae,no,3.194
+Cordia alliodora,6728,COAL,N,20,34.1,E,0.529,AM,Subcoriaceous,Boraginaceae,no,33
+Cordia borinquensis,6730,COBO3,N,6,30.5,E,0.632,AM,Coriaceous,Boraginaceae,no,61.56
+Cordia collococca,6731,COCO5,N,18,18,D,0.42,AM,Subcoriaceous,Boraginaceae,no,97.5
+Cordia laevigata,6735,COLA12,N,7.5,12.5,DE,No data,AM,Subcoriaceous,Boraginaceae,no,47.6608
+Cordia obliqua,6737,COOB3,I,9,10.1,E,No data,No data,Subcoriaceous,Boraginaceae,no,
+Cordia rickseckeri,6738,CORI,N,10.5,11,D,No data,AM,Coriaceous,Boraginaceae,no,
+Cordia sebestena,865,COSE2,I,6,7.9,DE,0.7,AM,Subcoriaceous,Boraginaceae,no,333.33
+Cordia sulcata,6743,COSU3,N,20,20.1,D,0.494,AM,Subcoriaceous,Boraginaceae,no,81.4948
+Cornutia obovata,6746,COOB4,N,7.5,7.5,E,No data,No data,Subcoriaceous,Verbenaceae,no,
+Cornutia pyramidata,6747,COPY2,N,4.5,4.5,E,No data,No data,Subcoriaceous,Verbenaceae,no,
+Crescentia cujete,6761,CRCU,N,9,9,DE,0.634,AM,Subcoriaceous,Bignoniaceae,no,26.5944
+Crossopetalum rhacoma,6767,CRRH,I,6,6.1,DE,No data,AM,Subcoriaceous,Celastraceae,no,19.8744
+Croton astroites,6773,CRAS3,N,6,6,E,No data,AM,Subcoriaceous,Euphorbiaceae,no,
+Croton flavens,6774,CRFL23,N,2,5.2,E,No data,AM,No data,Euphorbiaceae,no,
+Croton poecilanthus,6775,CRPO4,N,12,18.9,E,0.6,AM,Coriaceous,Euphorbiaceae,no,
+Cupania americana,6790,CUAM,N,15,22.6,E,0.614,No data,Subcoriaceous,Sapindaceae,no,197.64
+Cupania triquetra,6792,CUTR,N,19.5,19.5,E,No data,No data,Subcoriaceous,Sapindaceae,no,
+Cyathea arborea,6835,CYAR,N,9,13.4,E,0.173,AM,Subcoriaceous,Cyatheaceae,no,
+Cyathea tenera,6848,CYTE10,N,6,6,E,No data,AM,Chartaceous,Cyatheaceae,no,
+Cyrilla racemiflora,6862,CYRA,N,15,18,E,0.59,NM,Coriaceous,Cyrillaceae,no,
+Dacryodes excelsa,6867,DAEX,N,30,30,E,0.467,AM + NM,Coriaceous,Burseraceae,no,1988.07
+Daphnopsis americana,6871,DAAM2,N,7.5,14.9,E,No data,AM,Subcoriaceous,Thymelaeaceae,no,
+Daphnopsis philippiana,6873,DAPH,N,6,6,E,No data,AM,Coriaceous,Thymelaeaceae,no,
+Delonix regia,6883,DERE,I,15,15,D,0.537,No data,Chartaceous,Fabaceae,yes,408
+Dendropanax arboreus,6888,DEAR,N,12,20.1,E,0.42,AM + NM,Chartaceous to Subcoriaceous,Araliaceae,no,8
+Ditta myricoides,6923,DIMY,N,10.5,10.5,E,No data,No data,Subcoriaceous,Euphorbiaceae,no,
+Dracaena fragrans,6932,DRFR2,I,9,9,E,No data,AM,Subcoriaceous,Agavaceae,no,178.2894737
+Drypetes alba,6937,DRAL5,N,10.5,10.5,E,No data,No data,Subcoriaceous,Euphorbiaceae,no,
+Drypetes glauca,6938,DRGL2,N,9,17.4,E,0.673,AM + NM,Subcoriaceous,Euphorbiaceae,no,
+Drypetes lateriflora,6940,DRLA3,N,9,9,E,0.9,No data,Subcoriaceous,Euphorbiaceae,no,
+Erithalis fruticosa,7000,ERFR4,N,2,9.8,E,No data,AM,Subcoriaceous,Rubiaceae,no,
+Erythrina berteriana,7004,ERBE3,I,7.5,7.6,D,No data,AM,Chartaceous,Fabaceae,yes,
+Erythrina poeppigiana,7011,ERPO5,I,21,29.9,D,0.294,AM,Chartaceous,Fabaceae,yes,245
+Erythroxylum areolatum,7019,ERAR17,N,6,8.2,D,No data,NM,Chartaceous,Erythroxylaceae,no,
+Erythroxylum rotundifolium,7021,ERRO3,N,7.5,8.8,D,0.832,NM,Chartaceous,Erythroxylaceae,no,20.5465
+Erythroxylum rufum,7022,ERRU4,N,6,6,E,No data,NM,Subcoriaceous,Erythroxylaceae,no,
+Eucalyptus deglupta,7034,EUDE2,I,60,60,E,0.449,No data,Chartaceous,Myrtaceae,no,0.16
+Eucalyptus robusta,514,EURO2,I,27,32.3,E,0.64,AM + EM,Coriaceous,Myrtaceae,no,3.15
+Eugenia axillaris,7060,EUAX,N,6.5,7.9,E,0.9,AM,Subcoriaceous,Myrtaceae,no,158.9
+Eugenia biflora,7061,EUBI,N,9,15.2,E,0.8,AM,Subcoriaceous,Myrtaceae,no,97.92
+Eugenia borinquensis,7063,EUBO4,N,7.5,15.5,E,0.647,AM,Coriaceous,Myrtaceae,no,
+Eugenia confusa,7066,EUCO4,N,6,11,E,0.81,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia cordata,7067,EUCO5,N,9,9,E,0.645,AM,Subcoriaceous,Myrtaceae,no,95.8015267
+Eugenia cordata var. sintenisii,7068,EUCOS,N,9,14,E,No data,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia domingensis,7071,EUDO,N,18,18,E,0.59,AM,Subcoriaceous,Myrtaceae,no,25.87
+Eugenia ligustrina,7081,EULI,N,2.5,7.9,E,0.981,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia monticola,7084,EUMO,N,15,15,E,0.697,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia procera,7089,EUPR4,N,4.5,8.2,E,No data,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia pseudopsidium,7090,EUPS,N,1,9.1,E,0.868,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia rhombea,873,EURH,N,7.5,12.2,E,0.689,AM,Subcoriaceous,Myrtaceae,no,
+Eugenia sessiliflora,7094,EUSE10,N,4.5,4.5,E,No data,AM,Coriaceous,Myrtaceae,no,
+Eugenia stahlii,7098,EUST3,N,18,20.1,E,0.73,AM,Coriaceous,Myrtaceae,no,
+Eugenia xerophytica,7105,EUXE,N,4.5,5.8,E,No data,AM,Subcoriaceous,Myrtaceae,no,
+Euphorbia petiolaris,7113,EUPE8,N,6,6,D,No data,AM,Chartaceous,Euphorbiaceae,no,
+Exostema caribaeum,7135,EXCA,N,7.5,13.4,E,0.937,AM,Subcoriaceous,Rubiaceae,no,
+Exostema sanctae-luciae,7137,EXSA2,N,7.5,7.5,E,No data,AM,Subcoriaceous,Rubiaceae,no,
+Exothea paniculata,874,EXPA,N,14,22.9,E,0.73,No data,Chartaceous,Sapindaceae,no,
+Faramea occidentalis,7146,FAOC,N,9,9,E,0.584,AM,Subcoriaceous,Rubiaceae,no,300
+Ficus americana,7148,FIAM,N,15,15,E,0.4,AM,Coriaceous,Moraceae,no,
+Ficus citrifolia,877,FICI,N,18,22.3,E,0.384,AM,Subcoriaceous,Moraceae,no,0.6
+Ficus trigonata,7177,FITR,N,27,27,E,0.43,AM,Subcoriaceous,Moraceae,no,0.7884
+Flueggea acidoton,7190,FLAC,N,4,4,DE,No data,No data,Coriaceous,Phyllanthaceae,no,
+Genipa americana,7235,GEAM,N,18,18,D,0.634,AM,Subcoriaceous,Rubiaceae,no,106
+Gesneria pedunculosa,7237,GEPE4,N,4.5,7.3,E,No data,No data,Chartaceous to Subcoriaceous,Gesneriaceae,no,
+Gliricidia sepium,7245,GLSE2,I,8,11,D,0.616,AM,Chartaceous,Fabaceae,yes,104
+Gomidesia lindeniana,7258,GOLI,N,9,9.4,E,No data,No data,Coriaceous,Myrtaceae,no,
+Guaiacum officinale,7279,GUOF,N,9,9.1,E,No data,No data,Subcoriaceous,Zygophyllaceae,no,#N/A
+Guapira fragrans,7285,GUFR,N,12,19.5,E,0.489,EM,Subcoriaceous,Nyctaginaceae,no,52
+Guapira obtusata,7286,GUOB,N,18,18,D,No data,EM,Subcoriaceous,Nyctaginaceae,no,
+Guarea glabra,7288,GUGL3,N,7.5,17.1,E,0.478,AM,Subcoriaceous,Meliaceae,no,595
+Guarea guidonia,7290,GUGU,N,23,24.4,E,0.559,AM,Subcoriaceous,Meliaceae,no,500
+Guatteria caribaea,7295,GUCA2,N,21,21,E,0.8,AM,Subcoriaceous,Annonaceae,no,
+Guazuma ulmifolia,7298,GUUL,N,15,18,E,0.525,AM,Chartaceous,Sterculiaceae,no,47
+Guettarda elliptica,7299,GUEL,N,6,6.4,E,0.8,AM,Chartaceous,Rubiaceae,no,86.298
+Guettarda odorata,7302,GUOD,N,7.5,7.6,E,No data,AM,Chartaceous,Rubiaceae,no,90
+Guettarda ovalifolia,7303,GUOV,N,9,10.4,E,No data,AM,Chartaceous,Rubiaceae,no,
+Guettarda pungens,7305,GUPU,N,6,7.9,E,No data,AM,Coriaceous,Rubiaceae,no,
+Guettarda scabra,7306,GUSC,N,4.5,13.7,E,0.69,AM,Coriaceous,Rubiaceae,no,
+Guettarda valenzuelana,7309,GUVA,N,19.5,19.5,E,0.66,No data,Subcoriaceous,Rubiaceae,no,
+Gyminda latifolia,7315,GYLA,N,6,7.3,E,No data,AM,Subcoriaceous,Celastraceae,no,38.2155
+Gymnanthes lucida,7317,GYLU,N,9,12.8,E,0.964,No data,Subcoriaceous,Euphorbiaceae,no,
+Haematoxylum campechianum,7321,HACA2,I,9,18.3,D,0.934,No data,Chartaceous,Fabaceae,yes,17.087
+Helicteres jamaicensis,7347,HEJA,N,3,4.6,E,No data,No data,Subcoriaceous,Sterculiaceae,no,1337.96
+Henriettea fascicularis,7353,HEFA5,N,6,8.5,E,No data,No data,Chartaceous,Melastomataceae,no,
+Henriettea macfadyenii,7354,HEMA11,N,12,17.1,E,No data,No data,Chartaceous,Melastomataceae,no,
+Henriettea squamulosum,7357,HESQ,N,15,17.4,E,0.74,No data,Coriaceous,Melastomataceae,no,
+Hernandia sonora,7366,HESO,N,18,18,E,0.28,No data,Subcoriaceous,Hernandiaceae,no,2506.666667
+Hibiscus elatus,7403,HIEL,I,24,24,E,0.6,AM,Subcoriaceous,Malvaceae,no,100
+Hibiscus rosa-sinensis,7410,HIRO3,I,4.5,4.5,E,No data,AM,Chartaceous,Malvaceae,no,
+Hippomane mancinella,883,HIMA2,N,12,12,E,0.5,No data,Coriaceous,Euphorbiaceae,no,
+Hirtella rugosa,7418,HIRU2,N,6,6.4,E,0.9,AM,Subcoriaceous,Chrysobalanaceae,no,96.892
+Hirtella triandra,7420,HITR3,N,9,9,E,0.683,No data,Chartaceous,Chrysobalanaceae,no,
+Homalium racemosum,7422,HORA,N,21,21,E,0.778,No data,Chartaceous to Subcoriaceous,Flacourtiaceae,no,
+Hura crepitans,7434,HUCR,N,24,24,D,0.367,No data,Subcoriaceous,Euphorbiaceae,no,868
+Hyeronima clusioides,7438,HYCL,N,21,21,E,No data,No data,Subcoriaceous,Euphorbiaceae,no,4.9
+Hymenaea courbaril,7442,HYCO,N,20,25.6,E,0.788,EM + NM,Coriaceous,Fabaceae,yes,3678
+Hypelate trifoliata,7445,HYTR,N,6,7,E,No data,No data,Coriaceous,Sapindaceae,no,
+Ilex macfadyenii,7458,ILMA,N,12,12,E,No data,No data,Subcoriaceous,Aquifoliaceae,no,
+Ilex nitida,7459,ILNI,N,12,12,E,No data,AM + EM,Coriaceous,Aquifoliaceae,no,
+Ilex sideroxyloides,7462,ILSI,N,12,12,E,0.77,No data,Coriaceous,Aquifoliaceae,no,
+Inga,7467,INGA,N,19.5,19.5,E,0.6,AM,Coriaceous,Fabaceae,yes,
+Inga laurina,7470,INLA,N,21,22.9,E,0.649,AM,Coriaceous,Fabaceae,yes,892.86
+Inga nobilis ssp. quaternata,7471,INNOQ,I,7.5,11.9,E,0.56,AM,No data,Fabaceae,yes,
+Inga vera,7474,INVE,N,18,29,E,0.563,AM,Coriaceous,Fabaceae,yes,
+Ixora ferrea,7479,IXFE,I,6,23.5,E,0.65,AM,Subcoriaceous,Rubiaceae,no,
+Jacquinia armillaris,7485,JAAR2,N,4.5,4.5,E,No data,No data,Coriaceous,Theophrastaceae,no,19.9932
+Krugiodendron ferreum,7514,KRFE,N,4.5,10.4,E,1.089,No data,Subcoriaceous,Rhamnaceae,no,90.09
+Laetia procera,7530,LAPR2,N,23,23,E,0.648,No data,Subcoriaceous,Flacourtiaceae,no,4
+Laguncularia racemosa,988,LARA2,N,12,15.8,E,0.61,No data,Coriaceous,Combretaceae,no,280
+Lawsonia inermis,7550,LAIN5,I,5.5,5.5,E,No data,AM + NM,Chartaceous,Lythraceae,no,1.236
+Leandra krugiana,7552,LEKR,N,3,3,E,No data,AM,Chartaceous,Melastomataceae,no,
+Leucaena leucocephala,7565,LELE10,I,7.5,13.1,D,0.678,AM,Chartaceous,Fabaceae,yes,43.27
+Licaria brittoniana,7569,LIBR5,N,18,18,E,No data,No data,Coriaceous,Lauraceae,no,
+Licaria parvifolia,7570,LIPA9,N,15,15.8,E,0.8,AM,Coriaceous,Lauraceae,no,
+Lonchocarpus domingensis,7590,LODO5,N,21,21,D,No data,AM + EM,Subcoriaceous,Fabaceae,yes,
+Lonchocarpus glaucifolius,7591,LOGL2,N,9,17.7,E,No data,AM + EM,Coriaceous,Fabaceae,yes,
+Lonchocarpus heptaphyllus,7592,LOHE7,N,9,17.1,D,0.687,No data,Subcoriaceous,Fabaceae,yes,91
+Lyonia rubiginosa,7608,LYRU2,N,6,14.9,E,No data,No data,Subcoriaceous,Ericaceae,no,
+Machaonia portoricensis,7630,MAPO6,N,6,6,D,No data,AM,Chartaceous,Rubiaceae,no,1.606
+Maclura tinctoria,7632,MATI3,N,15,15,D,0.795,No data,No data,Moraceae,no,3
+Magnolia portoricensis,7635,MAPO2,N,21,21,E,0.7,AM,Coriaceous,Magnoliaceae,no,135.53
+Magnolia splendens,7636,MASP,N,23,23,E,0.59,AM,Coriaceous,Magnoliaceae,no,
+Mammea americana,7652,MAAM2,N,18,18,E,0.624,AM + NM,Coriaceous,Clusiaceae,no,73300
+Mangifera indica,885,MAIN3,I,19.5,35.1,E,0.573,AM,Coriaceous,Anacardiaceae,no,16466
+Manilkara bidentata,7662,MABI5,N,30,30,E,0.873,AM + EM,Coriaceous,Sapotaceae,no,1500
+Manilkara zapota,7674,MAZA,I,15,36.6,E,0.81,AM + EM,Subcoriaceous,Sapotaceae,no,126.74
+Margaritaria nobilis,7682,MANO,N,12,17.1,D,0.622,No data,Chartaceous,Euphorbiaceae,no,11
+Matayba domingensis,7689,MADO2,N,18,21,E,0.73,AM,Coriaceous,Sapindaceae,no,
+Maytenus elongata,7697,MAEL3,N,6,6,E,No data,No data,Coriaceous,Celastraceae,no,
+Maytenus laevigata,7698,MALA8,N,13.5,14,E,No data,AM,Subcoriaceous,Celastraceae,no,
+Maytenus ponceana,7699,MAPO5,N,12,12,E,No data,AM,Coriaceous,Celastraceae,no,
+Melicoccus bijugatus,7717,MEBI,I,18,18.3,E,0.767,No data,Chartaceous,Sapindaceae,no,2638.52
+Meliosma herbertii,7763,MEHE,N,18,21,E,0.42,No data,Subcoriaceous,Sabiaceae,no,
+Metopium toxiferum,886,METO3,N,6,8.8,E,0.574,AM,Coriaceous,Anacardiaceae,no,
+Miconia impetiolaris,7807,MIIM,N,6,6,E,No data,AM,Coriaceous,Melastomataceae,no,
+Miconia laevigata,7808,MILA8,N,3,13.1,E,No data,AM,Coriaceous,Melastomataceae,no,
+Miconia pachyphylla,7812,MIPA7,N,3,7,E,No data,AM,Coriaceous,Melastomataceae,no,
+Miconia prasina,7813,MIPR3,N,7.5,13.4,E,0.705,AM,Subcoriaceous,Melastomataceae,no,5.7168
+Miconia pycnoneura,7815,MIPY2,N,4.5,7.6,E,No data,AM,Coriaceous,Melastomataceae,no,
+Miconia racemosa,7816,MIRA2,N,3,3.7,E,0.45,AM,Subcoriaceous,Melastomataceae,no,2
+Miconia serrulata,7818,MISE2,N,7.5,9.4,E,No data,AM,Subcoriaceous,Melastomataceae,no,
+Miconia sintenisii,7819,MISI2,N,7.5,7.5,E,No data,AM,Coriaceous,Melastomataceae,no,0.048
+Miconia tetrandra,7822,MITE4,N,18,21.3,E,0.667,AM,Subcoriaceous,Melastomataceae,no,
+Micropholis garciniifolia,7828,MIGA,N,15,16.8,E,0.646,AM,Coriaceous,Sapotaceae,no,
+Micropholis guyanensis,7829,MIGU2,N,18,18.6,E,0.663,AM,Coriaceous,Sapotaceae,no,1142.86
+Morisonia americana,7857,MOAM,N,7.5,7.5,E,0.88,AM + NM,Coriaceous,Capparaceae,no,
+Morus nigra,684,MONI,I,9,13.7,D,0.517,No data,Chartaceous,Moraceae,no,4.2
+Mouriri helleri,7863,MOHE,N,3,3,E,No data,No data,Subcoriaceous,Melastomataceae,no,
+Myrcia citrifolia,7886,MYCI,N,6,8.2,E,No data,AM,Coriaceous,Myrtaceae,no,
+Myrcia deflexa,7887,MYDE,N,9,11.6,E,0.8,AM,Coriaceous,Myrtaceae,no,
+Myrcia fallax,7888,MYFA3,N,10,13.1,E,0.82,AM,Coriaceous,Myrtaceae,no,
+Myrcia leptoclada,7889,MYLE,N,10.5,10.5,E,0.804,AM,Subcoriaceous,Myrtaceae,no,
+Myrcia splendens,7891,MYSP,N,9,13.1,E,0.702,AM,Subcoriaceous,Myrtaceae,no,173
+Myrcianthes fragrans,7893,MYFR,N,16.5,16.5,E,No data,No data,Coriaceous,Myrtaceae,no,
+Myrciaria floribunda,7895,MYFL,N,16.5,16.8,E,0.785,No data,Chartaceous,Myrtaceae,no,
+Myrospermum frutescens,7905,MYFR2,I,6,6.1,D,0.83,No data,Chartaceous,Fabaceae,yes,
+Myrsine coriacea,7911,MYCO2,N,9,9.4,E,0.647,AM,Subcoriaceous,Myrsinaceae,no,9.34
+Myrsine cubana,7912,MYCU2,N,6,22.3,E,No data,AM,Coriaceous,Myrsinaceae,no,
+Nectandra coriacea,7932,NECO,N,9,19.2,E,0.47,AM,Coriaceous,Lauraceae,no,
+Nectandra hihua,7933,NEHI2,N,19.5,19.5,E,0.42,AM,Subcoriaceous,Lauraceae,no,
+Nectandra krugii,7934,NEKR,N,21,21,E,0.5,No data,Subcoriaceous,Lauraceae,no,
+Nectandra turbacensis,7939,NETU,N,18,30.5,E,0.545,AM,Subcoriaceous,Lauraceae,no,410
+Neea buxifolia,7940,NEBU,N,4.5,5.5,E,No data,EM,Subcoriaceous,Nyctaginaceae,no,23.1772
+Neolaugeria resinosa,7946,NERE2,N,9,21.9,E,0.703,AM,Subcoriaceous,Rubiaceae,no,
+Ochroma pyramidale,7980,OCPY,N,24,24,E,0.158,No data,Subcoriaceous,Bombacaceae,no,10.2
+Ocotea floribunda,7990,OCFL,N,18,29.3,E,0.395,AM,Subcoriaceous,Lauraceae,no,1643.32
+Ocotea leucoxylon,7994,OCLE,N,15,20.7,E,0.44,AM,Coriaceous,Lauraceae,no,100
+Ocotea moschata,7996,OCMO,N,24,24,E,0.6,AM,Coriaceous,Lauraceae,no,
+Ocotea spathulata,8001,OCSP,I,13.5,13.5,E,0.583,AM,Coriaceous,Lauraceae,no,
+Ocotea wrightii,8003,OCWR,N,18,21,E,No data,AM,Coriaceous,Lauraceae,no,
+Ormosia krugii,8020,ORKR,N,18,18.9,E,0.512,AM,Coriaceous,Fabaceae,yes,720
+Ouratea littoralis,8030,OULI,N,6,7.3,E,0.647,AM,Subcoriaceous,Ochnaceae,no,
+Ouratea striata,8032,OUST,N,4.5,12.2,E,No data,AM,Subcoriaceous,Ochnaceae,no,
+Oxandra lanceolata,8033,OXLA4,N,15,15,E,0.815,No data,Subcoriaceous,Annonaceae,no,
+Palicourea crocea,8047,PACR3,N,4.5,4.5,E,0.56,AM,Chartaceous,Rubiaceae,no,43.4896
+Palicourea croceoides,8049,PACR18,N,4.5,5.2,E,0.56,No data,Coriaceous,Rubiaceae,no,200
+Parathesis crenulata,8099,PACR2,N,5.5,9.8,E,No data,AM,Subcoriaceous,Myrsinaceae,no,36.5548
+Parkinsonia aculeata,8111,PAAC3,I,9,9,D,0.622,No data,Chartaceous,Fabaceae,no,105
+Peltophorum pterocarpum,8121,PEPT3,I,15,15.8,D,0.565,AM + NM,Chartaceous,Fabaceae,yes,55.4
+Persea americana,7211,PEAM3,I,9,18.9,D,0.525,AM,Subcoriaceous,Lauraceae,no,15308
+Persea urbaniana,8138,PEUR2,N,21,21,E,No data,No data,Subcoriaceous,Lauraceae,no,
+Petitia domingensis,8141,PEDO,N,21,21,E,0.733,AM,Subcoriaceous,Verbenaceae,no,12.47
+Picramnia pentandra,8164,PIPE,N,6,7,E,No data,AM,Subcoriaceous,Simaroubaceae,no,105.9
+Pictetia aculeata,8169,PIAC,N,6,14,D,0.869,No data,Subcoriaceous,Fabaceae,yes,
+Pilocarpus racemosus,8171,PIRA3,N,4.5,5.5,E,No data,AM,Subcoriaceous,Rutaceae,no,82.5641026
+Pilosocereus royenii,8173,PIRO6,N,6,7.6,E,0.239,AM + NM,Succulent,Cactaceae,no,
+Pimenta dioica,8175,PIDI2,I,12,17.1,E,0.96,No data,Subcoriaceous,Myrtaceae,no,
+Pimenta racemosa,8177,PIRA,N,12,13.7,E,0.831,No data,Subcoriaceous,Myrtaceae,no,28.01
+Pinus caribaea,8183,PICA18,I,30,30,E,0.563,EM,Coriaceous,Pinaceae,no,17
+Piper aduncum,8190,PIAD,N,6,6.4,E,No data,AM,Chartaceous,Piperaceae,no,
+Piper amalago,8191,PIAM2,N,5.5,7.6,E,No data,AM,Chartaceous,Piperaceae,no,1.36
+Piper blattarum,8192,PIBL,N,4.5,4.5,E,0.456,No data,Chartaceous,Piperaceae,no,
+Piscidia carthagenensis,8208,PICA5,N,10,10.1,D,0.8,No data,Chartaceous,Fabaceae,yes,64.52
+Pisonia albida,8211,PIAL3,N,9,12.8,D,0.387,EM,Subcoriaceous,Nyctaginaceae,no,10.2
+Pisonia subcordata,8216,PISU,N,15,15,D,0.46,EM,Subcoriaceous,Nyctaginaceae,no,14
+Pithecellobium dulce,8220,PIDU,I,15,15,DE,0.652,No data,Subcoriaceous,Fabaceae,yes,100.8
+Pithecellobium unguis-cati,8223,PIUN,N,9,17.7,DE,0.844,No data,Subcoriaceous,Fabaceae,yes,88.77
+Plumeria alba,8266,PLAL,N,4.5,7,D,0.8,AM,Coriaceous,Apocynaceae,no,26
+Plumeria obtusa,8268,PLOB2,N,12,12,E,0.684,AM,Subcoriaceous,Apocynaceae,no,
+Plumeria obtusa var. obtusa,8269,PLOBO,N,12,12,E,No data,No data,Subcoriaceous,Apocynaceae,no,
+Plumeria rubra,8271,PLRU2,I,7.5,7.5,E,0.5,No data,Coriaceous,Apocynaceae,no,42.7694
+Podocarpus coriaceus,8273,POCO3,N,9,12.2,E,0.7,AM,Coriaceous,Podocarpaceae,no,160.4
+Poitea florida,8275,POFL20,N,1.5,15.2,E,No data,No data,No data,Fabaceae,yes,17
+Polygala penaea,8280,POPE13,N,4.5,14.9,E,No data,No data,Coriaceous,Polygalaceae,no,
+Pouteria multiflora,8302,POMU6,N,24,24,E,0.77,AM,Coriaceous,Sapotaceae,no,16000
+Pouteria sapota,8305,POSA13,N,18,18,DE,0.855,AM,Coriaceous,Sapotaceae,no,17770
+Prestoea acuminata var. montana,8311,PRACM,N,15,30.5,E,0.238,AM,Coriaceous,Arecaceae,no,70
+Prosopis pallida,8344,PRPA4,I,20,20,D,0.774,AM + EM,Chartaceous,Fabaceae,yes,38.7
+Prunus myrtifolia,8346,PRMY,N,7.5,7.5,E,0.741,No data,Subcoriaceous,Rosaceae,no,
+Prunus occidentalis,8347,PROC,N,24,24,E,0.97,AM + EM,Subcoriaceous,Rosaceae,no,1930.5
+Pseudolmedia spuria,8352,PSSP2,N,15,16.8,E,0.75,AM,Subcoriaceous,Moraceae,no,1700.84
+Psidium guajava,8356,PSGU,N,4.5,9.1,E,0.652,AM,Subcoriaceous,Myrtaceae,no,9
+Psidium longipes var. orbiculare,8358,PSLOO,N,4,4,E,No data,No data,No data,Myrtaceae,no,
+Psidium sintenisii,8359,PSSI2,N,9,12.8,E,No data,No data,Subcoriaceous,Myrtaceae,no,
+Psychotria berteriana,8361,PSBE,N,6,10.1,E,0.473,AM,Chartaceous,Rubiaceae,no,
+Psychotria brachiata,8362,PSBR2,N,5,5,E,0.376,AM,Chartaceous,Rubiaceae,no,
+Psychotria grandis,8367,PSGR2,N,10.5,10.5,E,0.295,No data,Chartaceous,Rubiaceae,no,
+Pterocarpus macrocarpus,8408,PTMA7,I,24,24,E,0.7,AM,Chartaceous,Fabaceae,yes,533.46
+Pterocarpus marsupium,8409,PTMA3,I,30,30,D,0.62,AM,No data,Fabaceae,yes,583
+Quararibea turbinata,8422,QUTU,N,6,25.9,E,No data,AM,Subcoriaceous,Bombacaceae,no,
+Randia aculeata,8425,RAAC,N,3,7.6,D,0.672,AM,Subcoriaceous,Rubiaceae,no,
+Rauvolfia nitida,8433,RANI2,N,12,12,E,No data,AM,Subcoriaceous,Apocynaceae,no,
+Reynosia uncinata,8447,REUN,N,9,9,E,No data,No data,Coriaceous,Rhamnaceae,no,
+Rhizophora mangle,989,RHMA2,N,7.5,13.4,E,0.884,No data,Subcoriaceous,Rhizophoraceae,no,10100
+Ricinus communis,8472,RICO3,I,4.5,4.5,E,No data,AM,Chartaceous,Euphorbiaceae,no,322.31
+Rochefortia acanthophora,8476,ROAC2,N,3,4.6,D,No data,AM + NM,Subcoriaceous,Boraginaceae,no,
+Rondeletia inermis,8483,ROIN4,N,4.5,8.5,E,No data,AM,Subcoriaceous,Rubiaceae,no,0.0788
+Rondeletia pilosa,8484,ROPI3,N,4.5,14,E,No data,AM,Subcoriaceous,Rubiaceae,no,
+Roystonea borinquena,8489,ROBO,N,18,24.4,E,0.82,AM + NM,Coriaceous,Arecaceae,no,333.33
+Sabal causiarum,8494,SACA,N,9,9,E,No data,No data,Coriaceous,Arecaceae,no,484.26
+Samanea saman,8505,SASA10,I,20,20,E,0.503,No data,Subcoriaceous,Fabaceae,yes,176
+Samyda dodecandra,8556,SADO7,N,3.5,8.8,D,No data,No data,Chartaceous,Flacourtiaceae,no,
+Sapindus saponaria,8529,SASA4,N,18,18.3,E,0.712,No data,Chartaceous,Sapindaceae,no,767
+Sapium laurocerasus,8536,SALA8,N,18,19.8,E,0.415,No data,Subcoriaceous,Euphorbiaceae,no,
+Savia sessiliflora,8546,SASE6,N,7.5,7.5,D,No data,No data,Chartaceous,Euphorbiaceae,no,
+Schaefferia frutescens,8554,SCFR,N,9,9,E,No data,AM,Subcoriaceous,Celastraceae,no,38.2968
+Schefflera actinophylla,888,SCAC2,I,10.5,10.5,E,0.413,No data,Subcoriaceous,Araliaceae,no,7.4
+Schefflera gleasonii,8557,SCGL6,N,4.5,11.6,E,No data,No data,Subcoriaceous,Araliaceae,no,
+Schefflera morototonii,8558,SCMO10,N,18,21.6,E,No data,No data,Coriaceous,Araliaceae,no,140
+Schoepfia obovata,8572,SCOB,N,3,4.9,E,No data,AM,Subcoriaceous,Olacaceae,no,
+Senegalia muricata,6012,ACMU,N,9,18.3,D,No data,AM + EM,Chartaceous to Subcoriaceous,Fabaceae,yes,
+Senna siamea,8596,SESI3,I,18,25,E,0.669,AM,Chartaceous,Fabaceae,no,25
+Senna spectabilis,8597,SESP9,I,15,15,D,0.48,AM,Chartaceous,Fabaceae,no,27.2
+Senna sulfurea,8599,SESU10,I,7,7,DE,No data,No data,No data,Fabaceae,no,27.93
+Sideroxylon cubense,8611,SICU7,N,6,10.1,E,No data,AM,Subcoriaceous,Sapotaceae,no,
+Sideroxylon foetidissimum,890,SIFO,N,15,18,E,0.895,AM,Subcoriaceous,Sapotaceae,no,
+Sideroxylon obovatum,8613,SIOB,N,12,12.5,E,0.86,AM,Subcoriaceous,Sapotaceae,no,
+Sideroxylon salicifolium,891,SISA6,N,15,18,E,0.867,AM,Subcoriaceous,Sapotaceae,no,69.6
+Sloanea amygdalina,8623,SLAM,N,27,27,E,No data,AM,Coriaceous,Elaeocarpaceae,no,
+Sloanea berteriana,8624,SLBE,N,30,30,E,0.775,AM,Chartaceous,Elaeocarpaceae,no,460
+Solanum bahamense var. bahamense,8626,SOBAB,N,2,8.2,E,No data,AM + NM,No data,Solanaceae,no,
+Solanum polygamum,8633,SOPO,N,4.5,4.6,E,No data,AM + NM,Subcoriaceous,Solanaceae,no,3.74186
+Solanum rugosum,8634,SORU,N,4.5,7,E,No data,AM + NM,Chartaceous,Solanaceae,no,
+Solanum torvum,8636,SOTO4,N,3,3,E,No data,AM + NM,Chartaceous,Solanaceae,no,1
+Spathodea campanulata,8644,SPCA2,I,24,28.3,D,0.324,AM,Subcoriaceous,Bignoniaceae,no,5
+Spondias dulcis,8649,SPDU3,I,12,12,D,0.314,No data,Chartaceous,Anacardiaceae,no,1710.280186
+Spondias mombin,8650,SPMO,N,18,21,D,0.391,AM,Chartaceous,Anacardiaceae,no,2047
+Spondias purpurea,8652,SPPU,I,9,14,D,0.33,AM,Chartaceous,Anacardiaceae,no,
+Sterculia apetala,8664,STAP,I,15,15,E,0.392,AM,Coriaceous,Sterculiaceae,no,1898.5
+Swietenia,8678,SWIET,I,18,13.4,DE,0.58,AM,Subcoriaceous,Meliaceae,no,
+Swietenia macrophylla,8679,SWMA,I,18,25,D,0.52,AM,Subcoriaceous,Meliaceae,no,566
+Swietenia mahagoni,940,SWMA2,I,18,38.1,DE,0.64,AM,Subcoriaceous,Meliaceae,no,93.4
+Symplocos martinicensis,8684,SYMA,N,9,13.1,E,0.8,No data,Chartaceous to Subcoriaceous,Symplocaceae,no,
+Symplocos micrantha,8685,SYMI3,N,9,9,E,No data,No data,Subcoriaceous,Symplocaceae,no,
+Syzygium jambos,8701,SYJA,I,9,19.8,E,0.684,AM,Coriaceous,Myrtaceae,no,1340
+Syzygium malaccense,8702,SYMA2,I,12,12,E,0.562,No data,Coriaceous,Myrtaceae,no,3027.8
+Tabebuia haemantha,8712,TAHA,N,6,18,E,0.607,AM,Coriaceous,Bignoniaceae,no,14.065
+Tabebuia heterophylla,8713,TAHE,N,18,23.5,DE,0.535,AM,Subcoriaceous,Bignoniaceae,no,10
+Tabebuia rigida,8715,TARI,N,9,10.4,E,No data,AM,Coriaceous,Bignoniaceae,no,
+Tabebuia schumanniana,8717,TASC2,N,12,12,E,0.9,AM,Coriaceous,Bignoniaceae,no,14.73
+Tabernaemontana citrifolia,8720,TACI,N,7.5,8.8,E,No data,AM,Subcoriaceous,Apocynaceae,no,23.0989011
+Tamarindus indica,897,TAIN2,I,12,12.2,E,0.978,AM,Chartaceous,Fabaceae,no,646
+Tecoma stans,8743,TEST,N,7.5,7.5,E,0.516,AM,Chartaceous,Bignoniaceae,no,9
+Terminalia catappa,8750,TECA,I,15,15.8,E,0.494,AM,Coriaceous,Combretaceae,no,2473
+Ternstroemia stahlii,8766,TEST3,N,6,6,E,No data,No data,Coriaceous,Theaceae,no,
+Tetragastris balsamifera,8768,TEBA,N,24,24,E,0.65,AM + NM,Subcoriaceous,Burseraceae,no,
+Tetrazygia elaeagnoides,8781,TEEL,N,9,14.6,E,0.562,No data,Coriaceous,Melastomataceae,no,
+Tetrazygia urbanii,8783,TEUR,N,10,10,E,No data,No data,Subcoriaceous,Melastomataceae,no,
+Thespesia grandiflora,8786,THGR2,N,15,18,E,0.665,AM,Subcoriaceous,Malvaceae,no,253.81
+Thespesia populnea,8787,THPO3,I,9,9,E,0.627,AM,Subcoriaceous,Malvaceae,no,125.6
+Thouinia striata,8793,THST2,N,15,20.4,E,0.837,No data,Subcoriaceous,Sapindaceae,no,9.3324
+Thouinia striata var. portoricensis,8794,THSTP,N,4.5,7.6,D,0.9,No data,Coriaceous,Sapindaceae,no,
+Torralbasia cuneifolia,8816,TOCU,N,10.5,10.5,E,No data,No data,Coriaceous,Celastraceae,no,
+Trema lamarckianum,8828,TRLA2,N,6,6,E,No data,No data,Coriaceous,Ulmaceae,no,3.76
+Trema micranthum,8829,TRMI2,N,12,12,E,No data,AM,Subcoriaceous,Ulmaceae,no,
+Trichilia hirta,8833,TRHI3,N,6,11.9,D,0.55,AM,Chartaceous,Meliaceae,no,51.4516
+Trichilia pallida,8834,TRPA2,N,9,17.7,E,0.7,AM,Subcoriaceous,Meliaceae,no,43.0228
+Triphasia trifolia,8842,TRTR7,I,3,4.6,E,No data,AM,Subcoriaceous,Rutaceae,no,
+Triplaris cumingiana,8844,TRCU6,I,21,21,E,0.52,No data,Subcoriaceous,Polygonaceae,no,59
+Turpinia occidentalis,8850,TUOC,N,9,22.3,E,0.335,No data,Chartaceous,Staphyleaceae,no,40
+Urera baccifera,8853,URBA,N,4.5,5.8,E,0.165,AM + NM,Chartaceous,Urticaceae,no,
+Urera caracasana,8854,URCA2,N,6,14.9,E,0.316,No data,Chartaceous,Urticaceae,no,
+Vachellia anegadensis,6001,ACAN4,I,8,8,D,No data,AM + EM,Chartaceous,Fabaceae,yes,19.8263
+Vachellia farnesiana,303,ACFA,I,3,13.7,D,0.53,AM + EM,Chartaceous,Fabaceae,yes,66.6
+Vachellia macracantha,6008,ACMA,N,9,11.6,D,0.73,AM + EM,Chartaceous,Fabaceae,yes,292.2567
+Vitex divaricata,8873,VIDI2,N,19.5,19.5,D,0.62,AM,Chartaceous,Verbenaceae,no,
+Xylosma pachyphylla,8910,XYPA2,N,6,9.8,E,No data,AM,Coriaceous,Flacourtiaceae,no,
+Xylosma schwaneckeana,8913,XYSC3,N,7.5,7.9,E,No data,No data,Coriaceous,Flacourtiaceae,no,
+Zanthoxylum caribaeum,8924,ZACA3,N,18,18,E,0.76,AM,Subcoriaceous,Rutaceae,no,
+Zanthoxylum flavum,8928,ZAFL,N,15,15,D,0.783,AM,Chartaceous,Rutaceae,no,25.15
+Zanthoxylum martinicense,8931,ZAMA,N,19.5,29,E,0.581,AM,Chartaceous,Rutaceae,no,15.3504
+Zanthoxylum monophyllum,8932,ZAMO,N,7.5,12.8,D,0.735,AM,Subcoriaceous,Rutaceae,no,
+Ziziphus mauritiana,8939,ZIMA,I,12,13.4,E,0.618,AM,No data,Rhamnaceae,no,545
+Ziziphus reticulata,8940,ZIRE,N,6,6,E,No data,AM,Coriaceous,Rhamnaceae,no,211.9696
+Ziziphus taylorii,8943,ZITA,N,4.5,5.8,D,No data,AM,Subcoriaceous,Rhamnaceae,no,219.9632
