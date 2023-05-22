@@ -103,8 +103,8 @@ for(i in seq_along(modfiles)){
   names(pred_thresh) <- species 
   
   #Save the continuous and thresholded predictions (raster layers)! 
-  raster::writeRaster(pred, paste0("results/SDM_predictions/", names(pred)), format='GTiff')
-  raster::writeRaster(pred_thresh, paste0("results/SDM_threshold/", names(pred_thresh)), format='GTiff')
+  raster::writeRaster(pred, paste0("/Users/laumo791/Documents/PR/C1/Results/SDM_predictions/", names(pred)), format='GTiff')
+  raster::writeRaster(pred_thresh, paste0("/Users/laumo791/Documents/PR/C1/Results/SDM_threshold/", names(pred_thresh)), format='GTiff')
 }
 
 
