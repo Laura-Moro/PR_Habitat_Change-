@@ -72,10 +72,13 @@ sp <- raster::resample(Pred_stack_rp, f[[1]])
 #overaly by multipy the forest cover with the species n 
 Pred_f <- f* sp
 
-#agregation index of patches 
+#agregation index for the thresh holded maps 
 AI_Pred <- lsm_l_ai(Pred_stack_rp)
 
-#area difference between patches 
+#agregation index for the thresh holded maps overlayed with the forest cover 
+AI_Pred_f <-lsm_l_ai(Pred_f)
+
+#try out the function area difference between patches 
 lsm_l_area_cv(Pred_stack_rp)
 
 
