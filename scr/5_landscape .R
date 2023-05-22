@@ -1,0 +1,89 @@
+library(raster)
+library(rgdal)
+library(sp)
+library(landscapemetrics)
+
+#lanscape evaluation for each species 
+#1 select the forest cove
+
+# Load Helmer age map
+age <- raster("Data/Maps_1951-2000/iitf_jgr113_puertorico_forestage_zone_reprojectedWGS84.tif")
+
+#load pr outline shapefiel
+pr<- readOGR("Data/PR_shapes/outline/PR_outline_Project.shp")
+pr <- spTransform(pr, CRS("+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333 +lat_1=18.0333333333333 +lat_2=18.4333333333333 +x_0=152400.3048 +y_0=0 +datum=NAD27 +units=m +no_defs"))
+
+#load forest maps
+r51 <- raster("Data/Maps_1951-2000/puerto51_sub1_100905_landcov_final.img")
+r77 <- raster("Data/Maps_1951-2000/puerto77_sub1_100905_landcov_urbveg_final.img")
+r91 <- raster("Data/Maps_1951-2000/pr91_100805_final_quarry_recode2landcov_subset.img")
+r00 <- raster("Data/Maps_1951-2000/pr2000_100805_final_quarry_recode2landcov_subset.img")
+
+#reproject some of r91 and r77 and r00 (with different extent and cordinates) and save them 
+rp77 <- projectRaster(r77, r51, method='ngb')
+writeRaster(rp77, "Data/Maps_1951-2000/Rpm_77.img")
+rp77 <- raster("Data/Maps_1951-2000/Rpm_77.img")
+
+rp91<-projectRaster(r91, r51, method='ngb')
+writeRaster(rp91, "Data/Maps_1951-2000/Rpm_91.img")
+rp91<- raster("Data/Maps_1951-2000/Rpm_91.img")
+
+rp00 <-projectRaster(r00, r51, method='ngb')
+writeRaster(rp00, "Data/Maps_1951-2000/Rpm_00.img")
+rp00<- raster("Data/Maps_1951-2000/Rpm_00.img")
+
+#slect only the forest classes 
+f51 <- r51 %in% 5
+f77 <- rp77 %in% c(5,7)
+f91 <- rp91 %in% c(5,7)
+f00 <- rp00 %in% c(5,7)
+
+#stack and mask the forest classes
+f <- mask(stack(f51, f77, f91, f00), pr)
+
+#check if the maps are 
+check_landscape(f)
+
+#agregation index for each forets 
+lsm_l_ai(f51)
+lsm_l_ai(f77)
+lsm_l_ai(f91)
+lsm_l_ai(f00)
+
+#re-project binary maps to use with fragstats 
+#import the treshholded maps 
+Pred <- list.files(path = "results/SDM_threshold", 
+                       pattern='.tif', all.files=TRUE, full.names=T)
+
+#make a stack of all the tresholded predicitons
+Pred_stack <- stack(Pred)
+
+#Projection system of the hemlmer maps 
+newproj <- "+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333 
+          +lat_1=18.0333333333333 +lat_2=18.4333333333333 +x_0=152400.3048
+          +y_0=0 +datum=NAD27 +units=m +no_defs"
+
+# reproject the model the threshold maps 
+Pred_stack_rp <- projectRaster(Pred_stack, crs=newproj, method='ngb')
+
+# resemple function transfers values between non matching Raster* objects (in terms of origin and resolution)
+sp <- raster::resample(Pred_stack_rp, f[[1]])
+
+#overaly by multipy the forest cover with the species n 
+Pred_f <- f* sp
+
+#agregation index of patches 
+AI_Pred <- lsm_l_ai(Pred_stack_rp)
+
+#area difference between patches 
+lsm_l_area_cv(Pred_stack_rp)
+
+
+
+
+
+
+
+
+
+
