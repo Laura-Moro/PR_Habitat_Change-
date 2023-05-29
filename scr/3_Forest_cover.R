@@ -2,7 +2,7 @@ library(raster)
 library(rgdal)
 library(sp)
 
-
+# 1 CALCULATE TOTAL FOREST COVER 
 # Load Helmer age map
 age <- raster("Data/Maps_1951-2000/iitf_jgr113_puertorico_forestage_zone_reprojectedWGS84.tif")
 
@@ -16,24 +16,27 @@ r77 <- raster("Data/Maps_1951-2000/puerto77_sub1_100905_landcov_urbveg_final.img
 r91 <- raster("Data/Maps_1951-2000/pr91_100805_final_quarry_recode2landcov_subset.img")
 r00 <- raster("Data/Maps_1951-2000/pr2000_100805_final_quarry_recode2landcov_subset.img")
 
-#reproject some of r91 and r77 (with different extent and cordinates)
-rp77 <- projectRaster(r77, r51, method='ngb')
-writeRaster(rp77, "Data/Maps_1951-2000/Rp_77.img", format= 'raster', overwrite=TRUE)
+#reproject some of r91 and r77 and r00 (with different extent and cordinates) and save them 
 
-rp91<-projectRaster(r91, r51, method='ngb')
-writeRaster(rp91, "Data/Maps_1951-2000/Rp_91.img", format= 'raster')
+#rp77 <- projectRaster(r77, r51, method='ngb')
+#writeRaster(rp77, "Data/Maps_1951-2000/Rpm_77.img")
+rp77 <- raster("Data/Maps_1951-2000/Rpm_77.img")
 
-rp00 <-projectRaster(r00, r51, method='ngb')
-writeRaster(rp00, "Data/Maps_1951-2000/Rp_00.img")
+#rp91<-projectRaster(r91, r51, method='ngb')
+#writeRaster(rp91, "Data/Maps_1951-2000/Rpm_91.img")
+rp91<- raster("Data/Maps_1951-2000/Rpm_91.img")
+
+#rp00 <-projectRaster(r00, r51, method='ngb')
+#writeRaster(rp00, "Data/Maps_1951-2000/Rpm_00.img")
+rp00<- raster("Data/Maps_1951-2000/Rpm_00.img")
 
 ### RECLASSIFY FOREST AREAS (pixels that are covered in forest)
-
 f51 <- r51 %in% 5
-f77 <- r77 %in% c(5,7)
-f91 <- r91 %in% c(5,7)
-f00 <- r00 %in% c(5,7)
+f77 <- rp77 %in% c(5,7)
+f91 <- rp91 %in% c(5,7)
+f00 <- rp00 %in% c(5,7)
 
-#stack forest cover maps for the 4 different time point 
+#stack and mask the forest classes
 f <- mask(stack(f51, f77, f91, f00), pr)
 
 #Plot d all together in one silngle quagrant
@@ -41,26 +44,122 @@ f_plot<- crop(mask(stack(f51, f77, f91, f00), pr), buffer(pr))
 plot(f_plot, axes=FALSE,box=FALSE,legend=FALSE)
 plot(pr, add=T)
 
-#Plot each year separately 
-f51<- crop(mask(f51, pr), buffer(pr))
-plot(f51, axes=FALSE,box=FALSE,legend=FALSE)
-plot(pr, add=T)
+### READ IN SDM LAYERS AND PROCESS--> habitats gains and losses for each species 
+#1 re-project binary maps  
 
-f77<- crop(mask(f77, pr), buffer(pr))
-plot(f77, axes=FALSE,box=FALSE,legend=FALSE)
-plot(pr, add=T)
+#import the treshholded maps 
+Pred <- list.files(path = "/Users/laumo791/Documents/PR/C1/Results/SDM_threshold", 
+                   pattern='.tif', all.files=TRUE, full.names=T)
 
-f91<- crop(mask(f91, pr), buffer(pr))
-plot(f91, axes=FALSE,box=FALSE,legend=FALSE)
-plot(pr, add=T)
+#make a stack of all the tresholded predicitons
+Pred_stack <- stack(Pred)
 
-f00<- crop(mask(f00, pr), buffer(pr))
-plot(f00, axes=FALSE,box=FALSE,legend=FALSE)
-plot(pr, add=T)
+#take a the names of the species 
+names_pred <- gsub(".tif", "", list.files(path = "/Users/laumo791/Documents/PR/C1/Results/SDM_threshold", 
+                                          pattern='.tif', all.files=TRUE, full.names=F))
+
+#assign names to the layers of the stack 
+names(Pred_stack) <- names_pred
+
+#Projection system of the hemlmer maps 
+newproj <- "+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333 
+          +lat_1=18.0333333333333 +lat_2=18.4333333333333 +x_0=152400.3048
+          +y_0=0 +datum=NAD27 +units=m +no_defs"
+
+# reproject the model the threshold maps 
+Pred_stack_rp <- projectRaster(Pred_stack, crs=newproj, method='ngb')
+
+#save the re projected raster to use in the Landscape section 
+writeRaster(Pred_stack_rp, "/Users/laumo791/Documents/PR/C1/Results/F_stack/t_stack.tif", format= 'GTiff')
+
+names(Pred_stack_rp) <- names_pred
+
+#forest map and here we resample the forest maps 
+f_rs <- raster::resample( f, Pred_stack_rp , method="ngb")
+
+#mask the SDMs with the forest cover maps at the different time points 
+Pred_f51 <- f_rs[[1]]* Pred_stack_rp 
+Pred_f77 <- f_rs[[2]]* Pred_stack_rp
+Pred_f91 <- f_rs[[3]]* Pred_stack_rp
+Pred_f00 <- f_rs[[4]]* Pred_stack_rp
+
+#assign names to the predictions Layers
+names(Pred_f51) <- names_pred
+names(Pred_f77) <- names_pred
+names(Pred_f91) <- names_pred
+names(Pred_f00) <- names_pred
+
+#summ all of the pixels that were forest in 1951, 1977, 1991, 2000
+
+fcover_51<-cellStats(Pred_f51, 'sum')
+fcover_77<-cellStats(Pred_f77, 'sum')
+fcover_91<-cellStats(Pred_f91, 'sum')
+fcover_00<-cellStats(Pred_f00, 'sum')
+
+#total change 
+tot_change <- fcover_00 - fcover_51
+
+#transform into the data frame 
+df_fcover_51 <- as.data.frame(fcover_51)
+df_fcover_77 <- as.data.frame(fcover_77)
+df_fcover_91 <- as.data.frame(fcover_91)
+df_fcover_00 <-as.data.frame(fcover_00)
+df_tot_change <-as.data.frame(tot_change)
+
+F_cover <- cbind(df_fcover_51, df_fcover_77, df_fcover_91, df_fcover_00, df_tot_change)
+write.csv(F_cover, "Data/Derived/Forest_Cover.csv")
+
+-------------------------------------------------# END???
+
+#NOT SURE TO KIP THIS?????
+
+##### make a matrix 
+outmat_abs <- outmat_rel <- matrix(nrow=length(Pred_stack_rp), ncol=4)
+
+#for the all species layers (267)
+for(i in sample(1:length(Pred_stack_rp))){ #length(splayers)){
+  print(i)
+
+  f_rs <- raster::resample(f, Pred_stack_rp , method="ngb")
+  
+  Pred_f51 <- f_rs[[1]]* Pred_stack_rp 
+  Pred_f77 <- f_rs[[2]]* Pred_stack_rp
+  Pred_f91 <- f_rs[[3]]* Pred_stack_rp
+  Pred_f00 <- f_rs[[4]]* Pred_stack_rp
+  
+  outmat_abs[i,] <- cellStats(fsp, sum)
+  outmat_rel[i,] <- cellStats(fsp, sum)/cellStats( Pred_stack_rp)
+}
+
+matplot(t(outmat_abs), type='l', lty=1, col = my.palette, )
+matplot(t(outmat_rel), type='l', lty=1, log = "y")
+
+plot(t(outmat_abs)[4,]-t(outmat_abs)[1,], 
+     t(outmat_rel)[4,]-t(outmat_rel)[1,], bg=rainbow(15),
+     pch=21, log='xy')
+
+plot(a[41:267], bg=rainbow(15),type='l',lty=1)
 
 
-### FOREST COVER IN THE 6 LIFE ZONES 
-#rea in the life zones layer (poligon)
+#plot histrogram of species ABSOLUTE habitat change
+Abs<-(t(outmat_abs)[4,]-t(outmat_abs)[1,])
+#habitat gain
+a<-sort(Abs)
+hist(log(a[41:267]), col="yello")
+# habitata loss
+n<-a[1:42]
+loss<-(n+4000)
+hist(log(loss))
+
+hist((t(outmat_rel)[4,]-t(outmat_rel)[1,]), xlab="Habitat change 1951-2000")
+
+#make an hystorgram with the soecies and the gain/loss of habitat 
+
+
+#------------------------------------------------------------------------------#
+
+# 3  FOREST COVER IN THE 6 LIFE ZONES 
+#Area in the life zones layer (poligon)
 lz <- readOGR("/Users/lauramoro/Documents/PUERTO_RICO/Land_Cover_GAP/Data/Lifezones/lifezones_Project.shp")
 
 #transform the lifezone layer into a raster
@@ -96,6 +195,9 @@ for(i in 1:length(unique(lzr@data@attributes[[1]]$lz))){
   result_raster[i,] <- cellStats (tmp, sum) / cellStats((lzr2 == i), sum)*100
 }
 
+
+
+
 # 2->  PLOT that shows % forest cover chnege in the different life zones
 
 # choose a color palette
@@ -119,7 +221,6 @@ legend("left", legend=rownames(result_raster),
 my.palette <- (brewer.pal(n=6, name = 'Set2'))
 plot(lzr2, col=rev(my.palette) ,axes=FALSE, box=FALSE, legend=NULL)
 
-
 legend (legend=rownames(result_raster))
 plot(pr, add=T)
 
@@ -131,9 +232,9 @@ plot(pr, add=TRUE)
 # load full occurrence data
 head(full)
 lz_sp <- vector()
-for(i in 1:length(splayers)){
+for(i in 1:length(Pred)){
   print(i)
-  focsp <- substring(splayers[i], 1, 6)
+  focsp <- substring(Pred[i], 1, 6)
   focsp_xy <- full[full$CODE %in% focsp, c("LONGDEC","LATDEC")]
   lz_sp[i] <- as.numeric(names(sort(table(extract(lzr2, focsp_xy)),
                                     decreasing = T))[1])
@@ -165,85 +266,6 @@ boxplot((B~lz_sp),col=rev(my.palette[-4]))
 abline(h=0, lty=2)
 
 
-
-### READ IN SDM LAYERS AND PROCESS--> habitata gains and losses for each species 
-
-sdm_path <- "/Users/laumo791/Documents/PR/C1/SDMs/results/Models/Predictions"
-splayers <- list.files(sdm_path)[grepl(".gri", splayers)] #all the species 
-
-raster("/Users/lauramoro/Documents/PUERTO_RICO/Tree_SDMs/Bob_Tree_SDMs/ZANMON.grd")
-
-outmat_abs <- outmat_rel <- matrix(nrow=length(splayers), ncol=4)
-
-thresh <- 0.7
-
-#trial Run 
-for(i in sample(1:length(splayers), 3)){   #length(splayers)){
-  print(i)
-  sp <- crop(raster(paste0(sdm_path, splayers[[i]])), f)
-  spp <- raster::resample(sp, f[[1]])
-  fsp <- f * (spp > thresh)
-  outmat_abs[i,] <- cellStats(fsp, sum)
-  outmat_rel[i,] <- cellStats(fsp, sum)/cellStats(spp > thresh, sum)
-}
-
-#for the all species layers (267)
-for(i in sample(1:length(splayers))){ #length(splayers)){
-  print(i)
-  sp <- crop(raster(paste0(sdm_path, splayers[[i]])), f)
-  spp <- raster::resample(sp, f[[1]])
-  fsp <- f * (spp > 0.7)
-  outmat_abs[i,] <- cellStats(fsp, sum)
-  outmat_rel[i,] <- cellStats(fsp, sum)/cellStats(spp > 0.7, sum)
-}
-
-matplot(t(outmat_abs), type='l', lty=1, col = my.palette, )
-matplot(t(outmat_rel), type='l', lty=1, log = "y")
-
-plot(t(outmat_abs)[4,]-t(outmat_abs)[1,], 
-     t(outmat_rel)[4,]-t(outmat_rel)[1,], bg=rainbow(15),
-     pch=21, log='xy')
-
-plot(a[41:267], bg=rainbow(15),type='l',lty=1)
-
-#plot histrogram of species ABSOLUTE habitat change
-Abs<-(t(outmat_abs)[4,]-t(outmat_abs)[1,])
-#habitat gain
-a<-sort(Abs)
-hist(log(a[41:267]), col="yello")
-# habitata loss
-n<-a[1:42]
-loss<-(n+4000)
-hist(log(loss))
-
-hist((t(outmat_rel)[4,]-t(outmat_rel)[1,]), xlab="Habitat change 1951-2000")
-
-#make an hystorgram with the soecies and the gain/loss of habitat 
-
-
-### USING SHAPEFILES
-# Get results using the polygons to mask different areas
-
-lz <- readOGR("/Users/lauramoro/Documents/PUERTO_RICO/Land_Cover_GAP/Data/Lifezones/lifezones_Project.shp")
-
-result <- matrix(nrow=length(unique(lz$ECOZONE)), ncol=4)
-rownames(result) <- unique(lz$ECOZONE)
-colnames(result) <- c(1951, 1977, 1991, 2000)
-
-for(i in 1:length(unique(lz$ECOZONE))){
-  focal_lz <- unique(lz$ECOZONE)[i]
-  tmp <- mask(f, lz[lz$ECOZONE == focal_lz,])
-  result[i,] <- cellStats(tmp, sum)
-}
-
-plot(c(1951, 1977, 1991, 2000), result[1,], 
-     type='l', ylim=c(0,max(result)), lwd=3)
-
-for(i in 2:6){
-  lines(c(1951, 1977, 1991, 2000), result[i,], col=i, lwd=3)
-}
-
-legend("topleft", legend=rownames(result), col=1:6, lty=1, bty='n', cex=.75, lwd=3)
 
 
 

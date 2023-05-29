@@ -15,21 +15,8 @@ pr <- spTransform(pr, CRS("+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.43333333
 
 #load forest maps
 r51 <- raster("Data/Maps_1951-2000/puerto51_sub1_100905_landcov_final.img")
-r77 <- raster("Data/Maps_1951-2000/puerto77_sub1_100905_landcov_urbveg_final.img")
-r91 <- raster("Data/Maps_1951-2000/pr91_100805_final_quarry_recode2landcov_subset.img")
-r00 <- raster("Data/Maps_1951-2000/pr2000_100805_final_quarry_recode2landcov_subset.img")
-
-#reproject some of r91 and r77 and r00 (with different extent and cordinates) and save them 
-rp77 <- projectRaster(r77, r51, method='ngb')
-writeRaster(rp77, "Data/Maps_1951-2000/Rpm_77.img")
 rp77 <- raster("Data/Maps_1951-2000/Rpm_77.img")
-
-rp91<-projectRaster(r91, r51, method='ngb')
-writeRaster(rp91, "Data/Maps_1951-2000/Rpm_91.img")
 rp91<- raster("Data/Maps_1951-2000/Rpm_91.img")
-
-rp00 <-projectRaster(r00, r51, method='ngb')
-writeRaster(rp00, "Data/Maps_1951-2000/Rpm_00.img")
 rp00<- raster("Data/Maps_1951-2000/Rpm_00.img")
 
 #slect only the forest classes 
@@ -44,19 +31,26 @@ f <- mask(stack(f51, f77, f91, f00), pr)
 #check if the maps are 
 check_landscape(f)
 
-#agregation index for each forets 
+#aggregation index for the forest cover at each time point 
 lsm_l_ai(f51)
 lsm_l_ai(f77)
 lsm_l_ai(f91)
 lsm_l_ai(f00)
 
-#re-project binary maps to use with fragstats 
+#SDMs
 #import the treshholded maps 
-Pred <- list.files(path = "results/SDM_threshold", 
-                       pattern='.tif', all.files=TRUE, full.names=T)
+Pred <- list.files(path = "/Users/laumo791/Documents/PR/C1/Results/SDM_threshold", 
+                   pattern='.tif', all.files=TRUE, full.names=T)
 
 #make a stack of all the tresholded predicitons
 Pred_stack <- stack(Pred)
+
+#take a the names of the species 
+names_pred <- gsub(".tif", "", list.files(path = "/Users/laumo791/Documents/PR/C1/Results/SDM_threshold", 
+                                          pattern='.tif', all.files=TRUE, full.names=F))
+
+#assign names to the layers of the stack 
+names(Pred_stack) <- names_pred
 
 #Projection system of the hemlmer maps 
 newproj <- "+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333 
@@ -66,20 +60,43 @@ newproj <- "+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333
 # reproject the model the threshold maps 
 Pred_stack_rp <- projectRaster(Pred_stack, crs=newproj, method='ngb')
 
-# resemple function transfers values between non matching Raster* objects (in terms of origin and resolution)
-sp <- raster::resample(Pred_stack_rp, f[[1]])
+#save the re projected raster to use in the Landscape section 
+writeRaster(Pred_stack_rp, "/Users/laumo791/Documents/PR/C1/Results/F_stack/t_stack.tif", format= 'GTiff')
 
-#overaly by multipy the forest cover with the species n 
-Pred_f <- f* sp
+#asssing names to the raster stack layers 
+names(Pred_stack_rp) <- names_pred
 
-#agregation index for the thresh holded maps 
-AI_Pred <- lsm_l_ai(Pred_stack_rp)
+#here we resample the forest maps 
+f_rs <- raster::resample( f, Pred_stack_rp , method="ngb")
 
-#agregation index for the thresh holded maps overlayed with the forest cover 
-AI_Pred_f <-lsm_l_ai(Pred_f)
+#overaly by multipy the forest cover with the species models one forest map at the time 
+Pred_f51 <- f_rs[[1]]* Pred_stack_rp 
+Pred_f77 <- f_rs[[2]]* Pred_stack_rp
+Pred_f91 <- f_rs[[3]]* Pred_stack_rp
+Pred_f00 <- f_rs[[4]]* Pred_stack_rp
 
-#try out the function area difference between patches 
-lsm_l_area_cv(Pred_stack_rp)
+#assign names to the 
+names(Pred_f51) <- names_pred
+names(Pred_f77) <- names_pred
+names(Pred_f91) <- names_pred
+names(Pred_f00) <- names_pred
+
+#agregation index using Landscape matrix for the thresh holded maps overlayed with the forest cover 
+AI_Pred_f51 <-lsm_l_ai(Pred_f51)
+AI_Pred_f77 <-lsm_l_ai(Pred_f77)
+AI_Pred_f91 <-lsm_l_ai(Pred_f91)
+AI_Pred_f00 <-lsm_l_ai(Pred_f00)
+
+#make a data frame and add names to the species Ai 
+AI_total <- bind_cols(df_fcover_51$CODE,AI_Pred_f51$value, AI_Pred_f77$value, AI_Pred_f91$value, AI_Pred_f00$value)
+as.data.frame(AI_total)
+
+#Save the the AI 
+write.csv(AI_total, "/Users/laumo791/Documents/PR/C1/Results/AI_total.csv")
+AI_total <- read.csv("/Users/laumo791/Documents/PR/C1/Results/AI_total.csv", sep=";")
+
+
+
 
 
 
