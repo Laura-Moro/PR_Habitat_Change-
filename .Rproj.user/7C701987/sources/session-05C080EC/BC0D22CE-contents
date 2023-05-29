@@ -61,14 +61,7 @@ x$AI_00<- AI_total$AI_00[match(x$CODE, AI_total$CODE)]
 
 
 #save the data frame
-write.csv()
-
-
-
-
-
-
-
+write.csv(x, "Data/Derived/Abindanca_Fcover_AI.csv")
 
 
 
