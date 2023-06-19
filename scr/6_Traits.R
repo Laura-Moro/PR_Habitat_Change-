@@ -20,10 +20,10 @@ Traits_fix$species<- master_data$SCIENTIFIC_NAME[match(Traits_fix$Code, master_d
 
 #take the data on the seed mass form the Helmer data set (extact only infomation on seed mass form the df)
 Traits_fix$seed_mass <- traits_E$Seed_wt_avg_Kew_or_other_g_per_1000[match(Traits_fix$species,traits_E$PLANTS_Accepted_Name)]
-as.numeric(Traits_fix$seed_mass)
+Traits_fix$seed_mass<- as.numeric(Traits_fix$seed_mass)
 
 #Filter the master data in order to plot some thrits and abbundance 
-Traits_fix$seed_mass <-master_data<- filter(master_data, master_data$CODE %in% 
+master_data<- filter(master_data, master_data$CODE %in% 
                        Traits_fix$Code)
 
 # Try out some traits and abbundance 
@@ -39,9 +39,24 @@ abline(lm(master_data$tpa_2014 ~ Traits_fix$MAXHT))
 plot(Traits_fix$WD, master_data$tpa_2014)
 abline(lm(master_data$tpa_2014 ~ Traits_fix$WD))
 
-plot(log10(Traits_fix$seed_mass), log10(master_data$tpa_2014))
-
+plot((Traits_fix$seed_mass), log(master_data$tpa_2014))
 abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
+
+# when is not log transformed you can see the tendency! 
+plot((Traits_fix$seed_mass), (master_data$tpa_2014))
+abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
+
+plot(Traits_fix$LP.mass, log(master_data$tpa_2014) , cex=(master_data$fcover_51)/1500)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$LP.mas))
+
+
+plot(master_data$fcover_51, Traits_fix$LP.mass, cex=master_data$tpa_2014/10)
+abline(lm(Traits_fix$LP.mas ~ master_data$fcover_51))
+
+plot(Traits_fix$LP.mass, master_data$tpa_2014, cex=(master_data$fcover_51)/1500)
+abline(lm(master_data$tpa_2014~Traits_fix$LP.mas))
+
+
 
 
 
