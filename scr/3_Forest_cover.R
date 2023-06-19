@@ -106,32 +106,22 @@ df_fcover_91 <- as.data.frame(fcover_91)
 df_fcover_00 <-as.data.frame(fcover_00)
 df_tot_change <-as.data.frame(tot_change)
 
+#make a data frame of forets cover at the different time frames 
 F_cover <- cbind(df_fcover_51, df_fcover_77, df_fcover_91, df_fcover_00, df_tot_change)
 write.csv(F_cover, "Data/Derived/Forest_Cover.csv")
 
--------------------------------------------------# END???
+#transform the dataframe into a matrix 
+F_mat <- as.matrix(F_cover[2:5]*0.2025)
+#change row and column names 
+rownames(F_mat) <- names_pred 
+colnames(F_mat) <- c(1951, 1977, 1991, 2000)
 
-#NOT SURE TO KIP THIS?????
+#plot total forest cover change 
+matplot(t(F_mat), type='l', lty=1, xaxt='n', xlab = "Time (years)", ylab = "Suitable Habitat (km2)", cex.lab=2, cex.axis=1.8)
+axis(side=1, at= c(1, 2, 3, 4), labels = c(1951, 1977, 1991, 2000), cex.axis=1.8)
 
-##### make a matrix 
-outmat_abs <- outmat_rel <- matrix(nrow=length(Pred_stack_rp), ncol=4)
 
-#for the all species layers (267)
-for(i in sample(1:length(Pred_stack_rp))){ #length(splayers)){
-  print(i)
 
-  f_rs <- raster::resample(f, Pred_stack_rp , method="ngb")
-  
-  Pred_f51 <- f_rs[[1]]* Pred_stack_rp 
-  Pred_f77 <- f_rs[[2]]* Pred_stack_rp
-  Pred_f91 <- f_rs[[3]]* Pred_stack_rp
-  Pred_f00 <- f_rs[[4]]* Pred_stack_rp
-  
-  outmat_abs[i,] <- cellStats(fsp, sum)
-  outmat_rel[i,] <- cellStats(fsp, sum)/cellStats( Pred_stack_rp)
-}
-
-matplot(t(outmat_abs), type='l', lty=1, col = my.palette, )
 matplot(t(outmat_rel), type='l', lty=1, log = "y")
 
 plot(t(outmat_abs)[4,]-t(outmat_abs)[1,], 
@@ -139,7 +129,6 @@ plot(t(outmat_abs)[4,]-t(outmat_abs)[1,],
      pch=21, log='xy')
 
 plot(a[41:267], bg=rainbow(15),type='l',lty=1)
-
 
 #plot histrogram of species ABSOLUTE habitat change
 Abs<-(t(outmat_abs)[4,]-t(outmat_abs)[1,])

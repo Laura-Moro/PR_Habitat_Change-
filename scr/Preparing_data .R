@@ -1,5 +1,4 @@
 library(dplyr)
-library(rstatix)
 library(tidyverse)
 library(ggplot2)
 
@@ -61,7 +60,7 @@ x$AI_00<- AI_total$AI_00[match(x$CODE, AI_total$CODE)]
 
 
 #save the data frame
-write.csv(x, "Data/Derived/Abindanca_Fcover_AI.csv")
+write.csv(x, "Data/Derived/Abundance_Fcover_AI.csv")
 
 
 

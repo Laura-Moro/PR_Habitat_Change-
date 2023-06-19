@@ -1,4 +1,4 @@
-##PREPARING DATA 
+##PREPARING Trait Data 
 library(dplyr)
 library(readxl)
 
@@ -6,24 +6,48 @@ library(readxl)
 #compiling the Traint spreas sheets 
 
 traits_E <- read.csv("Data/Traits/Species_Traits.csv")
-abundance <- read.csv("Data/FIA/FIA_abundnace.csv", sep = ";" )
 guanica <- read.csv("Data/Traits/Guanica_seed_mass.csv")
 Traits_fix<- read.csv("Data/Traits/Fixed_traits.csv", sep = ";" )
+master_data <- read.csv("Data/Derived/Abundance_Fcover_AI.csv")
+
+#take the fixed traits data set and filter the species we have abundance data for 
+#it is only 168? 
+Traits_fix<- filter(Traits_fix, Traits_fix$Code %in% 
+                      master_data$CODE)
+
+#add species names to the traits data set 
+Traits_fix$species<- master_data$SCIENTIFIC_NAME[match(Traits_fix$Code, master_data$CODE)]
+
+#take the data on the seed mass form the Helmer data set (extact only infomation on seed mass form the df)
+Traits_fix$seed_mass <- traits_E$Seed_wt_avg_Kew_or_other_g_per_1000[match(Traits_fix$species,traits_E$PLANTS_Accepted_Name)]
+as.numeric(Traits_fix$seed_mass)
+
+#Filter the master data in order to plot some thrits and abbundance 
+Traits_fix$seed_mass <-master_data<- filter(master_data, master_data$CODE %in% 
+                       Traits_fix$Code)
+
+# Try out some traits and abbundance 
+plot(Traits_fix$THK, (master_data$tpa_2014))
+abline(lm(master_data$tpa_2014 ~ Traits_fix$THK))
+
+plot(Traits_fix$SLA.wp,(master_data$tpa_2014))
+abline(lm(master_data$tpa_2014 ~ Traits_fix$SLA.wp))
+
+plot(Traits_fix$MAXHT, master_data$tpa_2014)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$MAXHT))
+
+plot(Traits_fix$WD, master_data$tpa_2014)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$WD))
+
+plot(log10(Traits_fix$seed_mass), log10(master_data$tpa_2014))
+
+abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
 
 
 
-#extract species in both lists 
-sp_a <- Abundance$SCIENTIFIC_NAME
-sp_t <- Traits$PLANTS_Accepted_Name
 
-#species in commmon between the tow 
-Species_in_common_df <- intersect(sp_a, sp_t)
 
-#filter the original data 
-filtered_df <- filter(Traits, Traits$PLANTS_Accepted_Name %in% 
-                        Abundance$SCIENTIFIC_NAME)
 
-filtered_df <- write.csv(filtered_df, "Data/Traits/Traits_abbundnace.csv")
 
 
 

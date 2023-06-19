@@ -3,8 +3,9 @@ library(rFIA)
 
 #Download FIA data for Puerto Rico 
 PR_Trees <- getFIA(states = 'PR', dir = '/Users/laumo791/Documents/PR/C1/PR_Habitat_Change-/Data/FIA/NEW')
+
 #load data
-PR_Trees <- readFIA("Data/FIA/NEW")
+PR_Trees <- readFIA("Data/FIA/NEW") #fix the download bj
 head(PR_Trees)
 
 #Only estimates for the most recent inventory year
