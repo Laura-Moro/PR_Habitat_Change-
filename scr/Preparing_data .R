@@ -7,8 +7,8 @@ library(ggplot2)
 #load species list
 Sp_list <- read.csv("Data/PR_Trees_species_list.csv" , sep = ";")
 ABCO <-read.csv("Data/Derived/Abundace_Cover.csv", sep = ";" ) # this is the Species we have data of the FAI to be maybe revisioned 
-FIA <- read.csv("Data/FIA/FIA_abundnace.csv", sep = "," )
-F_cover <-read.csv("Data/Derived/Forest_Cover.csv", sep=";")
+FIA <- read.csv("Data/FIA/FIA_abundnace.csv")
+F_cover <-read.csv("Data/Derived/Forest_Cover.csv", sep=",")
 AI_total <- read.csv("Data/Derived/AI_total.csv", sep=";")
 
 #format species names 

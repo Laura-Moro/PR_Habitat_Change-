@@ -185,8 +185,6 @@ for(i in 1:length(unique(lzr@data@attributes[[1]]$lz))){
 }
 
 
-
-
 # 2->  PLOT that shows % forest cover chnege in the different life zones
 
 # choose a color palette
