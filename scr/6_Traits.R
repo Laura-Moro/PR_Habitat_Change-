@@ -1,6 +1,7 @@
 ##PREPARING Trait Data 
 library(dplyr)
 library(factoextra)
+library(tibble)
 
 #Species Traits 
 #compiling the Traint spreas sheets 
@@ -65,8 +66,8 @@ abline(lm(master_data$tpa_2014~Traits_fix$LP.mas))
 #preparedata take only the values for the 6 variables 
 data_PCA <- Traits_fix [, c(1:5,7,10)]
 
-#Transform into a matrix 
-PCA_mat <- as.data.frame(data_PCA)
+data_complete<-bind_cols(master_data, data_PCA)
+
 
 #run the pca (i think it is dropping the NA values) 
 # maybe try to center the variables 
@@ -101,113 +102,152 @@ fviz_pca_biplot(res.pca, repel = TRUE,
 )
 
 #look at the results 
-
 #eigenvalues
 eig.val <- get_eigenvalue(res.pca)
-
-#results for variables 
-res.var <- get_pca_var(res.pca)
-res.var$coord #Coordinates for the variables
-res.var$cor #Correlations between variables and dimensions
-res.var$cos2 #Quality of rapresentation 
-res.var$contrib #contribution to the PCs 
 
 #results for individuals 
 res.ind <- get_pca_ind(res.pca)
 res.ind$coord # Coordinates of distribution of each species in the multivariate space 
-res.ind$contrib #contribution to the PCs 
-res.ind$cos2 #quality of representation 
 
-#run model of interaction between traits and abundance and forets cover 
-Abbundace <- master_data$tpa_2014
-forest_1951 <- master_data$fcover_51
-forest_2000 <- master_data$fcover_00
+#add the two principal components as multivariate traits 
+df <-as.data.frame(res.ind$coord)
+
+#add the code name to the PCA results 
+df <- tibble::rowid_to_column(df, var ="id")
+data_PCA <-tibble::rowid_to_column(data_PCA,var ="id")
+df$CODE<- data_PCA$Code[match(df$id,data_PCA$id)]
+
+#take only the PCA results for the first 2 dimentions 
+df_P<- df[,c(2,3,8)]
+
+#just for now I'm filtering the data so that I can use the match function and add the data pcw1 data to the dataset 
+data_complete<- filter(data_complete, data_complete$CODE %in% df_P$CODE)
+#add PC1(dim1)
+data_complete$Dim1 <- df_P$Dim.1 [match(df_P$CODE, data_complete$CODE)]
+#add PC2(dim2)
+data_complete$Dim2 <- df_P$Dim.2 [match(df_P$CODE, data_complete$CODE)]
+
+write.csv(data_complete, "Data/Derived/data_complete_10_07")
 
 
-#WOOD DENSITY 
-fit_Wd_51<- lm(scale(Abbundace) ~ scale(master_data$fcover_51) + 
-                 scale(data_PCA$WD) +  
-               scale(master_data$fcover_51*data_PCA$WD))
+#Try running some models 
+
+#Transform the data 
+data_complete$log_abund <- log10(data_complete$tpa_2014)
+data_complete$fcover_51.z <- scale(data_complete$fcover_51)
+data_complete$fcover_00.z <- scale(data_complete$fcover_00)
+data_complete$fcover_77.z <- scale(data_complete$fcover_77)
+data_complete$fcover_91.z <- scale(data_complete$fcover_91)
+data_complete$AI_51.z <- scale (data_complete$AI_51)
+data_complete$AI_77.z <- scale (data_complete$AI_77)
+data_complete$AI_91.z <- scale (data_complete$AI_91)
+data_complete$AI_00.z <- scale (data_complete$AI_00)
+data_complete$wd.z <- scale(data_complete$WD)
+data_complete$LA.z <- scale(data_complete$LA.wp)
+data_complete$THK.z <- scale(data_complete$THK)
+data_complete$SLA.z<- scale(data_complete$SLA.wp)
+data_complete$MAXHT.z <- scale(data_complete$MAXHT)
+data_complete$seed_mass.z <- scale(data_complete$seed_mass)
+data_complete$Dim1.z <- scale(data_complete$Dim1)
+data_complete$Dim2.z <- scale(data_complete$Dim2)
+
+
+#wood density 
+fit_Wd_51<- lm(log_abund ~ fcover_51.z + 
+                 fcover_00.z + 
+                 AI_51.z + 
+                 AI_00.z + 
+                 wd.z + 
+                 fcover_51.z * wd.z, data=data_complete)
 summary(fit_Wd_51)
 
-fit_Wd_00<- lm(Abbundace ~ master_data$fcover_00 + 
-                 data_PCA$WD +  
-                 master_data$fcover_00*data_PCA$WD)
-summary(fit_Wd_00)
-
-#LEAVES THIKNESS
-#1951
-fit_thk_51<- lm(Abbundace ~ master_data$fcover_51 + 
-                 data_PCA$THK +  
-                 master_data$fcover_51*data_PCA$THK)
-summary(fit_thk_51)
-#2000
-fit_thk_00<- lm(Abbundace ~ master_data$fcover_00 + 
-                 data_PCA$THK +  
-                 master_data$fcover_00*data_PCA$THK)
-summary(fit_thk_00)
-
-#LEAVES AREA
-#1951
-fit_la_51<- lm(Abbundace ~ master_data$fcover_51 + 
-                  data_PCA$LA.wp +  
-                  master_data$fcover_51*data_PCA$THK)
-summary(fit_la_51)
-#2000
-fit_la_00<- lm(Abbundace ~ master_data$fcover_00 + 
-                  data_PCA$LA.wp +  
-                  master_data$fcover_00*data_PCA$THK)
-summary(fit_la_00)
+#Leaf area 
+fit_LA_51<- lm(log_abund ~ fcover_51.z + 
+                 fcover_00.z + 
+                 AI_51.z + 
+                 AI_00.z + 
+                 LA.z + 
+                 fcover_51.z * LA.z, data=data_complete)
+summary(fit_LA_51)
 
 
-#SPECIFIC LEAVES AREA
-#1951
-fit_sla_51<- lm(Abbundace ~ master_data$fcover_51 + 
-                 data_PCA$SLA.wp +  
-                 master_data$fcover_51*data_PCA$SLA.wp)
-summary(fit_sla_51)
-#2000
-fit_la_00<- lm(Abbundace ~ master_data$fcover_00 + 
-                 data_PCA$SLA.wp +  
-                 master_data$fcover_00*data_PCA$SLA.wp)
-summary(fit_sla_00)
+#leaf thikness
+fit_THK_51<- lm(log_abund ~ fcover_51.z + 
+                 fcover_00.z + 
+                 AI_51.z + 
+                 AI_00.z + 
+                 THK.z + 
+                 fcover_51.z * THK.z, data=data_complete)
+summary(fit_THK_51)
 
-#MAXIMUM HIGHT 
-#1951
-fit_mh_51<- lm(Abbundace ~ master_data$fcover_51 + 
-                  data_PCA$MAXHT +  
-                  master_data$fcover_51*data_PCA$MAXHT)
-summary(fit_mh_51)
-#2000
-fit_mh_00<- lm(Abbundace ~ master_data$fcover_00 + 
-                 data_PCA$MAXHT +  
-                 master_data$fcover_00*data_PCA$MAXHT)
-summary(fit_mh_00)
+#Specific leaf area 
+fit_SLA_51<- lm(log_abund ~ fcover_51.z + 
+                 fcover_00.z + 
+                 AI_51.z + 
+                 AI_00.z + 
+                  SLA.z + 
+                 fcover_51.z * SLA.z, data=data_complete)
+summary(fit_SLA_51)
 
+#maximum hight 
+fit_MAXHT_51<- lm(log_abund ~ fcover_51.z + 
+                  fcover_00.z + 
+                  AI_51.z + 
+                  AI_00.z + 
+                  MAXHT.z + 
+                  fcover_51.z * MAXHT.z, data=data_complete)
+summary(fit_MAXHT_51)
 
-#SEED MASS
-#1951
-fit_sm_51<- lm(Abbundace ~ master_data$fcover_51 + 
-                 data_PCA$seed_mass +  
-                 master_data$fcover_51*data_PCA$seed_mass)
-summary(fit_sm_51)
-#2000
-fit_sm_00<- lm(Abbundace ~ master_data$fcover_00 + 
-                 data_PCA$seed_mass +  
-                 master_data$fcover_00*data_PCA$seed_mass)
-summary(fit_sm_00)
-
+#seed mass
+fit_seed_mass_51<- lm(log_abund ~ fcover_51.z + 
+                    fcover_00.z + 
+                    AI_51.z + 
+                    AI_00.z + 
+                    seed_mass.z + 
+                    fcover_51.z * seed_mass.z, data=data_complete)
+summary(fit_seed_mass_51)
 
 
+fit_seed_mass_51<- lm(log_abund ~ fcover_51.z + 
+                        fcover_00.z + 
+                        AI_51.z + 
+                        AI_00.z + 
+                        seed_mass.z + 
+                        fcover_51.z * seed_mass.z, data=data_complete)
+summary(fit_seed_mass_51)
+
+fit_Dim1_51<- lm(log_abund ~ fcover_51.z + 
+                        fcover_00.z + 
+                        AI_51.z + 
+                        AI_00.z + 
+                        Dim1.z + 
+                        fcover_51.z * Dim1.z, data=data_complete)
+summary(fit_Dim1_51)
 
 
+fit_Dim2_51<- lm(log_abund ~ fcover_51.z + 
+                   fcover_00.z + 
+                   AI_51.z + 
+                   AI_00.z + 
+                   Dim2.z + 
+                   fcover_51.z * Dim2.z, data=data_complete)
+summary(fit_Dim2_51)
 
+fit_Dim2_AI51<- lm(log_abund ~ fcover_51.z + 
+                   fcover_00.z + 
+                   AI_51.z + 
+                   AI_00.z + 
+                   Dim2.z + 
+                   AI_51.z * Dim2.z, data=data_complete)
+summary(fit_Dim2_AI51)
 
-
-
-
-
-
+fit_Dim2_AI00<- lm(log_abund ~ fcover_51.z + 
+                   fcover_00.z + 
+                   AI_51.z + 
+                   AI_00.z + 
+                   Dim2.z + 
+                     AI_00.z * Dim2.z, data=data_complete)
+summary(fit_Dim2_AI00)
 
 
 

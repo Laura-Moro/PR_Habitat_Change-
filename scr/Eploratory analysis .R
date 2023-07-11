@@ -3,6 +3,7 @@ library(quantreg)
 
 #import data 
 Abco<- read.csv("Data/Derived/Abundance_Fcover_AI.csv", sep = ";")
+data_complete <-read.csv("Data/Derived/data_complete_10_07")
 
 ##Plot different variables against abbundance
 #tranfdorm forest cover abbundance in km2 each grid cell of the raster was 450 m resolution 
@@ -75,6 +76,28 @@ abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$AI_00,tau = 0.05, data=Abco), col = "re
 legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ####SEE VARIATION IN ABBUNDANCE 
 
 #make a matrix of the to see general trends in species abundance change 
@@ -134,76 +157,6 @@ A_mat %>%
 #runn the repeated measure anova 
 res.aov <- anova_test(data = A_mat, dv = TPA, wid = CODE, within = time)
 get_anova_table(res.aov)
-
-##Plot different variables against abbundance
-#tranfdorm forest cover abbundance in km2 each grid cell of the raster was 450 m resolution 
-Abco$fcover_51 <- Abco$fcover_51*0.2025
-Abco$fcover_00 <- Abco$fcover_00*0.2025
-Abco$tot_change <-Abco$tot_change *0.2025
-
-#Run a quantile regression Abundace ~ forest cover 1951
-fitAF_51<- rq(log10(Abco$tpa_2014) ~ Abco$fcover_51, data=Abco, tau = 0.95)
-#plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$fcover_51, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace ~ forest cover 1951",
-     xlab = " Habitat amount 1951",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$fcover_51,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$fcover_51, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$fcover_51,tau = 0.05, data=Abco), col = "red")
-legend("topright", legend = c("rq","lm","rq"), col = c("red", "blue", ), lty = 2)
-
-#Run a quantile regression Abundance ~ forest cover 1951
-fitAF_00<- rq(log10(Abco$tpa_2014) ~ Abco$fcover_00, data=Abco, tau = 0.95)
-#plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$fcover_00, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace ~ forest cover 2000",
-     xlab = " Habitat amount 2000",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$fcover_00,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$fcover_00, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$fcover_00,tau = 0.05, data=Abco), col = "red")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-#quantile regression of variation abbundnace ~ variation in habbitat 
-#variation in abbundnace 
-abundance <- Abco$tpa_2014 - Abco$tpa_2004
-fitAF<- rq(log10(abundance) ~ Abco$tot_change, data=Abco, tau = 0.95)
-#plot the quadratic regression 
-plot(log10(abundance) +2 ~ Abco$tot_change, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace chage 2004-2014 ~  Habitat change -1951-2000 ",
-     xlab = "  Habitat change -1951-2000",
-     ylab = "Abundace chage 2004-2014 ")
-abline(rq(log10(abundance)+2  ~ Abco$tot_change,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(abundance)+2  ~ Abco$tot_change, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(abundance) +2 ~ Abco$tot_change ,tau = 0.05, data=Abco), col = "red")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-
-#Run a quantile regression Abundance ~ Fragmentation 1951
-fitAI_00<- rq(log10(Abco$tpa_2014) ~ Abco$AI_51, data=Abco, tau = 0.95)
-#plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$AI_51, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace ~ fragmentation 1951",
-     xlab = " Habitat fragmentation 1951",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$AI_51,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$AI_51, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$AI_51,tau = 0.05, data=Abco), col = "red")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-
-#Run a quantile regression Abundance ~ Fragmentation 2000
-fitAI_00<- rq(log10(Abco$tpa_2014) ~ Abco$AI_00, data=Abco, tau = 0.95)
-#plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$AI_00, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace ~ fragmentation 2000",
-     xlab = " Habitat fragmentation 2000",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$AI_00,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$AI_00, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$AI_00,tau = 0.05, data=Abco),col = "red")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
 
 
