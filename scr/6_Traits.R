@@ -1,18 +1,20 @@
-##PREPARING Trait Data 
 library(dplyr)
 library(factoextra)
 library(tibble)
+library(ape)
+library(BHPMF)
 
-#Species Traits 
-#compiling the Traint spreas sheets 
 
+#1 
+#compiling the Trait data sheets 
 traits_E <- read.csv("Data/Traits/Species_Traits.csv")
-guanica <- read.csv("Data/Traits/Guanica_seed_mass.csv")
 Traits_fix<- read.csv("Data/Traits/Fixed_traits.csv", sep = ";" )
 master_data <- read.csv("Data/Derived/Abundance_Fcover_AI.csv",sep = ";")
+phyloinfo<- read.csv("Data/Traits/PR_Trees_species_list.csv")
+
 
 #take the fixed traits data set and filter the species we have abundance data for 
-#it is only 168? 
+#it is only 168
 Traits_fix<- filter(Traits_fix, Traits_fix$Code %in% master_data$CODE)
 
 #add species names to the traits data set 
@@ -20,18 +22,88 @@ Traits_fix$species <- master_data$SCIENTIFIC_NAME [match(Traits_fix$Code, master
 #add species codes to the helmer data set 
 traits_E$CODE <- master_data$CODE[match(traits_E$PLANTS_Accepted_Name, master_data$SCIENTIFIC_NAME)]
 
-
 #units: seed mass of kew is in for 1000 seeds and in g, seed mass of guanica is in for 1 seed in mg--> they are equicalent  
 #take the data on the seed mass form the Helmer data set (extact only infomation on seed mass form the df
 Traits_fix$seed_mass <- traits_E$Seed_wt_avg_Kew_or_other_g_per_1000[match(Traits_fix$species,traits_E$PLANTS_Accepted_Name)]
 Traits_fix$seed_mass <- as.numeric(Traits_fix$seed_mass)
 
-#!!!!!add seed mass form guanica # not very sure how to do this!!!!
-Traits_fix$seed_mass <- guanica$SS.MG[match(Traits_fix$Code, guanica$SPECIES)]
-
 #Filter the master data in order to plot abbundance and and traits 
 master_data<- filter(master_data, master_data$CODE %in% Traits_fix$Code)
 
+
+###3 
+#phylogenetic imputation of missing values 
+
+#make a temporary directory 
+tmp.dir <- dirname("Data/Traits/tmp")
+
+#take phylogenetic informations 
+phyloinfo<- read.csv("Data/Traits/PR_Trees_species_list.csv")
+phyloinfo <- phyloinfo[ ,(1:5)] 
+
+#compile fylogenetic infomation data table 
+phyloinfo_filtered <- dplyr::filter(phyloinfo, phyloinfo$SP.CODE %in% Traits_fix$Code)
+phyloinfo_filtered <- phyloinfo_filtered[, c(5, 4, 3, 2, 1)]
+phyloinfo_filtered <- phyloinfo_filtered[order(phyloinfo_filtered$ORDER),]
+hierarchy.info <- phyloinfo_filtered 
+#add identification number ofr each species 
+id <- c(1:168)
+#add the identification number as a colum
+hierarchy.info['id'] <- id
+
+
+#add phylogenetic information to order trait data in the same way of the hierarchy info 
+trait.info <- Traits_fix
+#add columns to order the data 
+trait.info$species<- phyloinfo_filtered$SPECIES[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
+trait.info$genus<- phyloinfo_filtered$GENUS[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
+trait.info$family<- phyloinfo_filtered$FAMILY[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
+trait.info$order<- phyloinfo_filtered$ORDER[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
+#reorde columns
+trait.info <- trait.info[, c(1, 9, 11, 12, 13, 2,3,4,5,6,7,10)]
+trait.info<- trait.info[order(trait.info$order),]
+#not that the table is ordered we can remove the phylogenetic informations 
+trait.info <- trait.info[,c(6:12)]
+
+#lod and z trensformation of the data 
+back_trans_pars <- list()
+rm_col <- c()
+for(i in 1:ncol(trait.info)){
+  x <- trait.info[,i] # goes through the columns
+  min_x <- min(x, na.rm = T
+               ) # takes the min of each column
+  if(min_x < 0.00000000001){
+    x <- x - min_x + 1 # make this optional if min x is neg
+  }
+  logx <- log10(x)
+  mlogx <- mean(logx, na.rm = T)
+  slogx <- sd(logx, na.rm = T)
+  x <- (logx - mlogx)/slogx # Z transformation
+  back_trans_pars[[i]] <- list(min_x = min_x,
+                               mlogx = mlogx,
+                               slogx = slogx)
+  trait.info[,i] <- x
+}
+write.csv(back_trans_pars, paste0(tmp.dir, "back_trans_pars.csv"))
+
+#add the id column 
+trait.info['id'] <- id 
+as.numeric(trait.info$id)
+#reorder
+trait.info <- trait.info[,c(8,1,2,3,4,5,6,7)]
+#transform into a matrix
+trait.mat <- data.matrix(trait.info)
+as.numeric(trait.info[1:168,])
+
+
+#Perform gap filling
+GapFilling(trait.info, hierarchy.info,
+           mean.gap.filled.output.path = paste0(tmp.dir,"/mean_gap_filled.txt"),
+           std.gap.filled.output.path= paste0(tmp.dir,"/std_gap_filled.txt"), tmp.dir=tmp.dir)
+
+
+
+##3 explore data 
 # Try plotting out some traits and abundance 
 # leaf thickness 
 plot(Traits_fix$THK, (master_data$tpa_2014))
@@ -62,6 +134,10 @@ abline(lm(Traits_fix$LP.mas ~ master_data$fcover_51))
 plot(Traits_fix$LP.mass, master_data$tpa_2014, cex=(master_data$fcover_51)/1500)
 abline(lm(master_data$tpa_2014~Traits_fix$LP.mas))
 
+
+
+
+####4
 #look at the specie in the multivariate space
 #preparedata take only the values for the 6 variables 
 data_PCA <- Traits_fix [, c(1:5,7,10)]
