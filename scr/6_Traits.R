@@ -65,7 +65,7 @@ trait.info<- trait.info[order(trait.info$order),]
 #not that the table is ordered we can remove the phylogenetic informations 
 trait.info <- trait.info[,c(6:12)]
 
-#lod and z trensformation of the data 
+#lod and z trensformation of the data plus saving back transforming informations
 back_trans_pars <- list()
 rm_col <- c()
 for(i in 1:ncol(trait.info)){
