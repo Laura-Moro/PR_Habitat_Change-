@@ -31,7 +31,7 @@ Traits_fix$seed_mass <- as.numeric(Traits_fix$seed_mass)
 master_data<- filter(master_data, master_data$CODE %in% Traits_fix$Code)
 
 
-###3 
+##2 
 #phylogenetic imputation of missing values 
 
 #make a temporary directory 
@@ -103,7 +103,7 @@ GapFilling(trait.info, hierarchy.info,
 
 
 
-##3 explore data 
+###3 explore data 
 # Try plotting out some traits and abundance 
 # leaf thickness 
 plot(Traits_fix$THK, (master_data$tpa_2014))
