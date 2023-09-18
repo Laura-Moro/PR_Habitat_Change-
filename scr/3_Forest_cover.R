@@ -121,7 +121,6 @@ matplot(t(F_mat), type='l', lty=1, xaxt='n', xlab = "Time (years)", ylab = "Suit
 axis(side=1, at= c(1, 2, 3, 4), labels = c(1951, 1977, 1991, 2000), cex.axis=1.8)
 
 
-
 matplot(t(outmat_rel), type='l', lty=1, log = "y")
 
 plot(t(outmat_abs)[4,]-t(outmat_abs)[1,], 

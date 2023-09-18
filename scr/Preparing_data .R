@@ -10,6 +10,7 @@ ABCO <-read.csv("Data/Derived/Abundace_Cover.csv", sep = ";" ) # this is the Spe
 FIA <- read.csv("Data/FIA/FIA_abundnace.csv")
 F_cover <-read.csv("Data/Derived/Forest_Cover.csv", sep=",")
 AI_total <- read.csv("Data/Derived/AI_total.csv", sep=";")
+traits <- read.csv("Data/Derived/Trait_complete.csv")
 
 #format species names 
 # paste togher species name  
@@ -51,21 +52,34 @@ x$fcover_91<- F_cover$fcover_91[match(x$CODE, F_cover$SPECIES)]
 x$fcover_00<- F_cover$fcover_00[match(x$CODE, F_cover$SPECIES)]
 x$tot_change<- F_cover$tot_change[match(x$CODE, F_cover$SPECIES)]
 
-
 #add Aggregation index 
 x$AI_51<- AI_total$AI_51[match(x$CODE, AI_total$CODE)]
 x$AI_77<- AI_total$AI_77[match(x$CODE, AI_total$CODE)]
 x$AI_91<- AI_total$AI_91[match(x$CODE, AI_total$CODE)]
 x$AI_00<- AI_total$AI_00[match(x$CODE, AI_total$CODE)]
 
-
 #save the data frame
 write.csv(x, "Data/Derived/Abundance_Fcover_AI.csv")
 
+#add Trait data 
+Master_data <- read.csv("Data/Derived/Abundance_Fcover_AI.csv",sep=";")
+trait <- read.csv("Data/Derived/Trait_complete.csv")
 
+#filter fo 
+Master_data<- filter(master_data, master_data$CODE %in% trait$code)
 
+#add columns with the species trait data 
+Master_data$WD <- trait$WD[match(Master_data$CODE, trait$code)]
+Master_data$THK<- trait$THK[match(Master_data$CODE, trait$code)]
+Master_data$LA.wp <- trait$LA.wp[match(Master_data$CODE, trait$code)]
+Master_data$SLA.wp <- trait$SLA.wp[match(Master_data$CODE, trait$code)]
+Master_data$LP.mass<- trait$LP.mass[match(Master_data$CODE, trait$code)]
+Master_data$MAXHT <- trait$MAXHT[match(Master_data$CODE, trait$code)]
+Master_data$seed_mass <- trait$seed_mass[match(Master_data$CODE, trait$code)]
+Master_data$PC1 <- trait$Dim1[match(Master_data$CODE, trait$code)]
+Master_data$PC2 <- trait$Dim2[match(Master_data$CODE, trait$code)]
 
-
+write.csv(Master_data, "Data/Derived/Master_data.csv")
 
 
 

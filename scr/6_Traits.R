@@ -2,16 +2,13 @@ library(dplyr)
 library(factoextra)
 library(tibble)
 library(ape)
-library(BHPMF)
-
+library(Rphylopars)
 
 #1 
 #compiling the Trait data sheets 
 traits_E <- read.csv("Data/Traits/Species_Traits.csv")
 Traits_fix<- read.csv("Data/Traits/Fixed_traits.csv", sep = ";" )
 master_data <- read.csv("Data/Derived/Abundance_Fcover_AI.csv",sep = ";")
-phyloinfo<- read.csv("Data/Traits/PR_Trees_species_list.csv")
-
 
 #take the fixed traits data set and filter the species we have abundance data for 
 #it is only 168
@@ -32,117 +29,58 @@ master_data<- filter(master_data, master_data$CODE %in% Traits_fix$Code)
 
 
 ##2 
-#phylogenetic imputation of missing values 
+#phylogenetic imputation of missing Trait values 
 
-#make a temporary directory 
-tmp.dir <- dirname("Data/Traits/tmp")
+#load treated trait values! i had to remove some specie than were not presnt in the phylogeny 
+trait <-read.csv("Data/traits/Traits_IMP.csv", sep=";")
+#reorder columns
+trait<-trait[, c(10,3,4,5,6,7,8,11)]
+#remove space 
+trait$species <- sub(" ", "_", trait$species)
 
-#take phylogenetic informations 
-phyloinfo<- read.csv("Data/Traits/PR_Trees_species_list.csv")
-phyloinfo <- phyloinfo[ ,(1:5)] 
+#transform data
+trait$WD <- scale(trait$WD)
+trait$THK <- scale(trait$THK)
+trait$LA.wp <- scale(trait$LA.wp)
+trait$SLA.wp <- scale(trait$SLA.wp)
+trait$LP.mass <- scale(trait$LP.mass)
+trait$MAXHT <- scale(trait$MAXHT)
+trait$seed_mass <- scale(trait$seed_mass)
 
-#compile fylogenetic infomation data table 
-phyloinfo_filtered <- dplyr::filter(phyloinfo, phyloinfo$SP.CODE %in% Traits_fix$Code)
-phyloinfo_filtered <- phyloinfo_filtered[, c(5, 4, 3, 2, 1)]
-phyloinfo_filtered <- phyloinfo_filtered[order(phyloinfo_filtered$ORDER),]
-hierarchy.info <- phyloinfo_filtered 
-#add identification number ofr each species 
-id <- c(1:168)
-#add the identification number as a colum
-hierarchy.info['id'] <- id
+#phylogeny
+myTree <- ape::read.tree(file = "Data/traits/phylogeny.new")
+#choose the first phylogeny 
+tree<- myTree[[1]]
 
+#assing 0.0001 values to the branch leght --> otherwise the phylopars does not work
+tree$edge.length[which(tree$edge.length==0)]=0.0001
 
-#add phylogenetic information to order trait data in the same way of the hierarchy info 
-trait.info <- Traits_fix
-#add columns to order the data 
-trait.info$species<- phyloinfo_filtered$SPECIES[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
-trait.info$genus<- phyloinfo_filtered$GENUS[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
-trait.info$family<- phyloinfo_filtered$FAMILY[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
-trait.info$order<- phyloinfo_filtered$ORDER[match(trait.info$Code, phyloinfo_filtered$SP.CODE)]
-#reorde columns
-trait.info <- trait.info[, c(1, 9, 11, 12, 13, 2,3,4,5,6,7,10)]
-trait.info<- trait.info[order(trait.info$order),]
-#not that the table is ordered we can remove the phylogenetic informations 
-trait.info <- trait.info[,c(6:12)]
+#preform phylo imputation 
+IMP_data<-phylopars(trait_data=trait, tree=tree, phylo_correlated = FALSE)
 
-#lod and z trensformation of the data plus saving back transforming informations
-back_trans_pars <- list()
-rm_col <- c()
-for(i in 1:ncol(trait.info)){
-  x <- trait.info[,i] # goes through the columns
-  min_x <- min(x, na.rm = T
-               ) # takes the min of each column
-  if(min_x < 0.00000000001){
-    x <- x - min_x + 1 # make this optional if min x is neg
-  }
-  logx <- log10(x)
-  mlogx <- mean(logx, na.rm = T)
-  slogx <- sd(logx, na.rm = T)
-  x <- (logx - mlogx)/slogx # Z transformation
-  back_trans_pars[[i]] <- list(min_x = min_x,
-                               mlogx = mlogx,
-                               slogx = slogx)
-  trait.info[,i] <- x
-}
-write.csv(back_trans_pars, paste0(tmp.dir, "back_trans_pars.csv"))
-
-#add the id column 
-trait.info['id'] <- id 
-as.numeric(trait.info$id)
-#reorder
-trait.info <- trait.info[,c(8,1,2,3,4,5,6,7)]
-#transform into a matrix
-trait.mat <- data.matrix(trait.info)
-as.numeric(trait.info[1:168,])
+#view imputed data 
+IMP_trait<-IMP_data[["anc_recon"]]
+IMP_trait <-as.data.frame(IMP_trait)
+IMP_trait <- tibble::rownames_to_column(IMP_trait, "Species")
 
 
-#Perform gap filling
-GapFilling(trait.info, hierarchy.info,
-           mean.gap.filled.output.path = paste0(tmp.dir,"/mean_gap_filled.txt"),
-           std.gap.filled.output.path= paste0(tmp.dir,"/std_gap_filled.txt"), tmp.dir=tmp.dir)
+#filter data only for our study species 
+IMP_trait<- dplyr::filter(IMP_trait, IMP_trait$Species %in% trait$species)
+#change the underscore with a space for the species names 
+IMP_trait$Species<- sub( "_", " ", IMP_trait$Species)
+#Add code to the species nale 
+IMP_trait$code <- master_data$CODE[match(IMP_trait$Species, master_data$SCIENTIFIC_NAME)]
+IMP_trait <- IMP_trait[, c(9,1,2,3,4,5,6,7,8)]
 
 
-
-###3 explore data 
-# Try plotting out some traits and abundance 
-# leaf thickness 
-plot(Traits_fix$THK, (master_data$tpa_2014))
-abline(lm(master_data$tpa_2014 ~ Traits_fix$THK))
-#Specific leaf area 
-plot(Traits_fix$SLA.wp,(master_data$tpa_2014))
-abline(lm(master_data$tpa_2014 ~ Traits_fix$SLA.wp))
-#maximum height 
-plot(Traits_fix$MAXHT, master_data$tpa_2014)
-abline(lm(master_data$tpa_2014 ~ Traits_fix$MAXHT))
-#wood density 
-plot(Traits_fix$WD, master_data$tpa_2014)
-abline(lm(master_data$tpa_2014 ~ Traits_fix$WD))
-#sead mass 
-plot((Traits_fix$seed_mass), log(master_data$tpa_2014))
-abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
-
-# when is not log transformed you can see the tendency
-plot(Traits_fix$seed_mass, master_data$tpa_2014)
-abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
-
-plot(Traits_fix$WD,(master_data$tpa_2014) , cex=(master_data$fcover_51)/1500)
-abline(lm(master_data$tpa_2014 ~ Traits_fix$WD))
-
-plot(master_data$fcover_51, Traits_fix$LP.mass, cex=master_data$tpa_2014/10)
-abline(lm(Traits_fix$LP.mas ~ master_data$fcover_51))
-
-plot(Traits_fix$LP.mass, master_data$tpa_2014, cex=(master_data$fcover_51)/1500)
-abline(lm(master_data$tpa_2014~Traits_fix$LP.mas))
+#save imputed data 
+write.csv(IMP_trait, "Data/traits/IMP_trait.CSV")
 
 
-
-
-####4
+##3
 #look at the specie in the multivariate space
 #preparedata take only the values for the 6 variables 
-data_PCA <- Traits_fix [, c(1:5,7,10)]
-
-data_complete<-bind_cols(master_data, data_PCA)
+data_PCA <- IMP_trait
 
 
 #run the pca (i think it is dropping the NA values) 
@@ -153,7 +91,7 @@ res.pca <- prcomp(~ data_PCA$WD +
                     data_PCA$SLA.wp +
                     data_PCA$MAXHT +
                     data_PCA$seed_mass, 
-                    data=data_PCA, scale = TRUE)
+                  data=data_PCA, scale = TRUE)
 
 #look at the scree plot 
 fviz_eig(res.pca)
@@ -191,19 +129,52 @@ df <-as.data.frame(res.ind$coord)
 #add the code name to the PCA results 
 df <- tibble::rowid_to_column(df, var ="id")
 data_PCA <-tibble::rowid_to_column(data_PCA,var ="id")
-df$CODE<- data_PCA$Code[match(df$id,data_PCA$id)]
+df$code<- data_PCA$code[match(df$id,data_PCA$id)]
 
 #take only the PCA results for the first 2 dimentions 
-df_P<- df[,c(2,3,8)]
+df<- df[,c(2,3,8)]
 
-#just for now I'm filtering the data so that I can use the match function and add the data pcw1 data to the dataset 
-data_complete<- filter(data_complete, data_complete$CODE %in% df_P$CODE)
-#add PC1(dim1)
-data_complete$Dim1 <- df_P$Dim.1 [match(df_P$CODE, data_complete$CODE)]
+#add principal components 1 and 2 to the  
+IMP_trait$Dim1 <- df$Dim.1 [match(df$code,IMP_trait$code)]
 #add PC2(dim2)
-data_complete$Dim2 <- df_P$Dim.2 [match(df_P$CODE, data_complete$CODE)]
+IMP_trait$Dim2 <- df$Dim.2 [match(df$code,IMP_trait$code)]
 
-write.csv(data_complete, "Data/Derived/data_complete_10_07")
+#save data 
+write.csv(IMP_trait,"Data/Derived/Trait_complete.csv")
+
+
+
+###3 explore data 
+# Try plotting out some traits and abundance 
+# leaf thickness 
+plot(Traits_fix$THK, (master_data$tpa_2014))
+abline(lm(master_data$tpa_2014 ~ Traits_fix$THK))
+#Specific leaf area 
+plot(Traits_fix$SLA.wp,(master_data$tpa_2014))
+abline(lm(master_data$tpa_2014 ~ Traits_fix$SLA.wp))
+#maximum height 
+plot(Traits_fix$MAXHT, master_data$tpa_2014)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$MAXHT))
+#wood density 
+plot(Traits_fix$WD, master_data$tpa_2014)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$WD))
+#sead mass 
+plot((Traits_fix$seed_mass), log(master_data$tpa_2014))
+abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
+
+# when is not log transformed you can see the tendency
+plot(Traits_fix$seed_mass, master_data$tpa_2014)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$seed_mass))
+
+plot(Traits_fix$WD,(master_data$tpa_2014) , cex=(master_data$fcover_51)/1500)
+abline(lm(master_data$tpa_2014 ~ Traits_fix$WD))
+
+plot(master_data$fcover_51, Traits_fix$LP.mass, cex=master_data$tpa_2014/10)
+abline(lm(Traits_fix$LP.mas ~ master_data$fcover_51))
+
+plot(Traits_fix$LP.mass, master_data$tpa_2014, cex=(master_data$fcover_51)/1500)
+abline(lm(master_data$tpa_2014~Traits_fix$LP.mas))
+
 
 
 #Try running some models 
