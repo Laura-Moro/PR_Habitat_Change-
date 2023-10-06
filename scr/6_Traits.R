@@ -10,6 +10,12 @@ traits_E <- read.csv("Data/Traits/Species_Traits.csv")
 Traits_fix<- read.csv("Data/Traits/Fixed_traits.csv", sep = ";" )
 master_data <- read.csv("Data/Derived/Abundance_Fcover_AI.csv",sep = ";")
 
+
+
+
+
+
+
 #take the fixed traits data set and filter the species we have abundance data for 
 #it is only 168
 Traits_fix<- filter(Traits_fix, Traits_fix$Code %in% master_data$CODE)
@@ -38,6 +44,7 @@ trait<-trait[, c(10,3,4,5,6,7,8,11)]
 #remove space 
 trait$species <- sub(" ", "_", trait$species)
 
+
 #transform data
 trait$WD <- scale(trait$WD)
 trait$THK <- scale(trait$THK)
@@ -55,14 +62,16 @@ tree<- myTree[[1]]
 #assing 0.0001 values to the branch leght --> otherwise the phylopars does not work
 tree$edge.length[which(tree$edge.length==0)]=0.0001
 
+#trip the phylogeny with the species we have data
+Tree_traits<- keep.tip(tree, trait$species)
+
 #preform phylo imputation 
-IMP_data<-phylopars(trait_data=trait, tree=tree, phylo_correlated = FALSE)
+IMP_data<-phylopars(trait_data=trait, tree=tree, phylo_correlated = T)
 
 #view imputed data 
 IMP_trait<-IMP_data[["anc_recon"]]
 IMP_trait <-as.data.frame(IMP_trait)
 IMP_trait <- tibble::rownames_to_column(IMP_trait, "Species")
-
 
 #filter data only for our study species 
 IMP_trait<- dplyr::filter(IMP_trait, IMP_trait$Species %in% trait$species)
@@ -70,7 +79,7 @@ IMP_trait<- dplyr::filter(IMP_trait, IMP_trait$Species %in% trait$species)
 IMP_trait$Species<- sub( "_", " ", IMP_trait$Species)
 #Add code to the species nale 
 IMP_trait$code <- master_data$CODE[match(IMP_trait$Species, master_data$SCIENTIFIC_NAME)]
-IMP_trait <- IMP_trait[, c(9,1,2,3,4,5,6,7,8)]
+IMP_trait <- IMP_trait[, c(9,1,2,3,4,5,7,8)]
 
 
 #save imputed data 
@@ -174,7 +183,6 @@ abline(lm(Traits_fix$LP.mas ~ master_data$fcover_51))
 
 plot(Traits_fix$LP.mass, master_data$tpa_2014, cex=(master_data$fcover_51)/1500)
 abline(lm(master_data$tpa_2014~Traits_fix$LP.mas))
-
 
 
 #Try running some models 

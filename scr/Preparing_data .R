@@ -66,7 +66,7 @@ Master_data <- read.csv("Data/Derived/Abundance_Fcover_AI.csv",sep=";")
 trait <- read.csv("Data/Derived/Trait_complete.csv")
 
 #filter fo 
-Master_data<- filter(master_data, master_data$CODE %in% trait$code)
+Master_data<- filter(Master_data, Master_data$CODE %in% trait$code)
 
 #add columns with the species trait data 
 Master_data$WD <- trait$WD[match(Master_data$CODE, trait$code)]
@@ -80,6 +80,8 @@ Master_data$PC1 <- trait$Dim1[match(Master_data$CODE, trait$code)]
 Master_data$PC2 <- trait$Dim2[match(Master_data$CODE, trait$code)]
 
 write.csv(Master_data, "Data/Derived/Master_data.csv")
+write.csv(Master_data, "Data/Derived/Master_data_uf.csv")
+
 
 
 

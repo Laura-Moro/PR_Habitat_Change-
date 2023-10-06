@@ -2,79 +2,218 @@
 library(quantreg)
 
 #import data 
-Abco<- read.csv("Data/Derived/Abundance_Fcover_AI.csv", sep = ";")
-data_complete <-read.csv("Data/Derived/data_complete_10_07")
+AFF <- read.csv("Data/Derived/Abundance_Fcover_AI.csv", sep = ";")
+master_data <-read.csv("Data/Derived/Master_data.csv")
 
 ##Plot different variables against abbundance
 #tranfdorm forest cover abbundance in km2 each grid cell of the raster was 450 m resolution 
-Abco$fcover_51 <- Abco$fcover_51*0.2025
-Abco$fcover_00 <- Abco$fcover_00*0.2025
-Abco$tot_change <-Abco$tot_change *0.2025
+AFF$fcover_51 <- AFF$fcover_51*0.2025
+AFF$fcover_00 <- AFF$fcover_00*0.2025
+AFF$tot_change <-AFF$tot_change*0.2025
+
+tot_AI <- AFF$AI_00 - AFF$AI_51
+
+#make a correlation matrix of our variables 
+
+#log transform Data
+AFF$tpa_2004.z <- log(AFF$tpa_2004)
+AFF$tpa_2014.z <- log(AFF$tpa_2014)
+abundance <- AFF$tpa_2014.z - AFF$tpa_2004.z
 
 #Run a quantile regression Abundace ~ forest cover 1951
-fitAF_51<- rq(log10(Abco$tpa_2014) ~ Abco$fcover_51, data=Abco, tau = 0.95)
-#plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$fcover_51, data=Abco, tau = 0.95, pch = 16, 
+fitAF_51<- rq( AFF$tpa_2014.z ~ AFF$fcover_51,  data=AFF, tau = 0.95)
+
+model.null = rq(AFF$tpa_2014.z ~ 1,
+                data = AFF,
+                tau = 0.95)
+#look at the P-value of the model 
+anova(fitAF_51, model.null)
+
+#plot the quantile regression Abundace ~ forest cover 1951
+plot(AFF$tpa_2014.z ~ AFF$fcover_51, data=AFF, pch = 16,
      main = " Abundace ~ forest cover 1951",
      xlab = " Habitat amount 1951",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$fcover_51,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$fcover_51, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$fcover_51,tau = 0.05, data=Abco), col = "red")
-legend("topright", legend = c("rq","lm","rq"), col = c("red", "blue",  ), lty = 2)
+     ylab = " log Species Abundance (TPA)")
+abline(rq((AFF$tpa_2014.z) ~ AFF$fcover_51, tau = 0.95, data=AFF), col = "Red")
+abline(lm(AFF$tpa_2014.z  ~ AFF$fcover_51, data=AFF), col = "blue")
+legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
-#Run a quantile regression Abundance ~ forest cover 1951
-fitAF_00<- rq(log10(Abco$tpa_2014) ~ Abco$fcover_00, data=Abco, tau = 0.95)
+#Run a quantile regression Abundance ~ forest cover 2000
+fitAF_00<- rq(AFF$tpa_2014.z ~ AFF$fcover_00, data=AFF, tau = 0.95)
+
+model.null = rq(AFF$tpa_2014.z ~ 1,
+                data = AFF,
+                tau = 0.95)
+#look at the P-value of the model 
+anova(fitAF_00, model.null)
+
+
 #plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$fcover_00, data=Abco, tau = 0.95, pch = 16, 
+plot(AFF$tpa_2014.z~ AFF$fcover_00, data=AFF, pch = 16, 
      main = " Abundace ~ forest cover 2000",
      xlab = " Habitat amount 2000",
      ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$fcover_00,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$fcover_00, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$fcover_00,tau = 0.05, data=Abco), col = "red")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
+abline(rq(AFF$tpa_2014.z ~ AFF$fcover_00, tau = 0.95, data=AFF), col = "red")
+abline(lm(AFF$tpa_2014.z  ~ AFF$fcover_00, data=AFF), col = "blue")
+legend("bottomright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
-#quantile regression of variation abbundnace ~ variation in habbitat 
-#variation in abbundnace 
-abundance <- Abco$tpa_2014 - Abco$tpa_2004
-fitAF<- rq(log10(abundance) ~ Abco$tot_change, data=Abco, tau = 0.95)
+#quantile regression of Abundnace ~ variation in habbitat 
+fitAF<- rq(AFF$tpa_2014.z ~ AFF$tot_change, data=AFF, tau = 0.95)
+
+model.null = rq(AFF$tpa_2014.z ~ 1,
+                data = AFF,
+                tau = 0.95)
+#look at the P-value of the model 
+anova(fitAF, model.null)
+
 #plot the quadratic regression 
-plot(log10(abundance) +2 ~ Abco$tot_change, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace chage 2004-2014 ~  Habitat change -1951-2000 ",
+plot((AFF$tpa_2014.z) ~ AFF$tot_change, data=AFF, pch = 16, 
+     main = " Abundace 2014 ~  Habitat change -1951-2000 ",
      xlab = "  Habitat change -1951-2000",
-     ylab = "Abundace chage 2004-2014 ")
-abline(rq(log10(abundance)+2  ~ Abco$tot_change,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(abundance)+2  ~ Abco$tot_change, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(abundance) +2 ~ Abco$tot_change ,tau = 0.05, data=Abco),col = "red")
+     ylab = "Abundace 2014 ")
+abline(rq(AFF$tpa_2014.z  ~ AFF$tot_change, tau = 0.95, data= AFF), col = "red")
+abline(lm(AFF$tpa_2014.z  ~ AFF$tot_change, data= AFF), col = "blue")
 legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
 
 #Run a quantile regression Abundance ~ Fragmentation 1951
-fitAI_00<- rq(log10(Abco$tpa_2014) ~ Abco$AI_51, data=Abco, tau = 0.95)
+fitAI_51<- rq(AFF$tpa_2014.z ~ AFF$AI_51, data=AFF, tau = 0.95)
+anova(fitAI_51, model.null)
+
 #plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$AI_51, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace ~ fragmentation 1951",
-     xlab = " Habitat fragmentation 1951",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$AI_51,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$AI_51, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$AI_51,tau = 0.05, data=Abco), col = "red")
+plot(AFF$tpa_2014.z ~ AFF$AI_51, data=AFF, pch = 16, 
+     main = " Abundace ~ Connectivity 1951",
+     xlab = " Habitat Connectivity 1951",
+     ylab = "log Species Abundance (TPA) ")
+abline(rq(AFF$tpa_2014.z ~ AFF$AI_51, tau = 0.95, data=AFF), col = "red")
+abline(lm(AFF$tpa_2014.z  ~ AFF$AI_51, data= AFF), col = "blue")
 legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
 
 #Run a quantile regression Abundance ~ Fragmentation 2000
-fitAI_00<- rq(log10(Abco$tpa_2014) ~ Abco$AI_00, data=Abco, tau = 0.95)
+fitAI_00<- rq(AFF$tpa_2014.z ~ AFF$AI_00, data=AFF, tau = 0.95)
+anova(fitAI_00, model.null)
+
 #plot the quadratic regression 
-plot(log10(Abco$tpa_2014) +2 ~ Abco$AI_00, data=Abco, tau = 0.95, pch = 16, 
-     main = " Abundace ~ fragmentation 2000",
-     xlab = " Habitat fragmentation 2000",
+plot(AFF$tpa_2014.z ~ AFF$AI_00, data=AFF, pch = 16, 
+     main = " Abundace ~ Connectivity 2000",
+     xlab = " Habitat Connectivity 2000",
      ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(log10(Abco$tpa_2014)+2  ~ Abco$AI_00,tau = 0.95, data=Abco), col = "red")
-abline(lm(log10(Abco$tpa_2014)+2  ~ Abco$AI_00, tau = 0.5, data=Abco), col = "blue")
-abline(rq(log10(Abco$tpa_2014) +2 ~ Abco$AI_00,tau = 0.05, data=Abco), col = "red")
+abline(rq(AFF$tpa_2014.z ~ AFF$AI_00, tau = 0.95, data=AFF), col = "red")
+abline(rq(AFF$tpa_2014.z  ~ AFF$AI_00, tau = 0.5 ,data= AFF), col = "blue")
 legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
+#scale data 
+AFF$tpa_2014.z <- scale(AFF$tpa_2014.z)
+AFF$AI_51.z <- scale(AFF$AI_51)
+AFF$AI_00.z<- scale(AFF$AI_00)
+AFF$fcover_51.z <- scale(AFF$fcover_51)
+AFF$fcover_00.z <- scale(AFF$fcover_00)
+tot_AI <- AFF$AI_00.z - AFF$AI_51.z
+tot_F <- AFF$fcover_00.z - AFF$fcover_51.z
+
+#interaction between abbundance and connectivity 
+Fit_int_AIF51<- lm(AFF$tpa_2014.z ~ AFF$AI_51.z * AFF$fcover_51.z)
+Fit_int_AIF00<- lm(AFF$tpa_2014.z ~ AFF$AI_00.z *AFF$fcover_00.z)
+
+mod1 <- lm(abundance ~ tot_AI* tot_F * master_data$PC1)
+summary(mod1)
+
+
+#log transform and scale 
+master_data$tpa_2014.z <- log10(master_data$tpa_2014)
+master_data$tpa_2014.z <- scale(master_data$tpa_2014.z)
+master_data$tpa_2004.z <- log10(master_data$tpa_2004)
+master_data$tpa_2004.z <- scale(master_data$tpa_2004.z)
+master_data$fcover_51.z <- scale(master_data$fcover_51)
+master_data$fcover_00.z <- scale(master_data$fcover_00)
+master_data$AI_51.z <- scale(master_data$AI_51)
+master_data$AI_00.z <- scale(master_data$AI_00)
+
+
+master_data$tot_abundance <- master_data$tpa_2004.z - master_data$tpa_2014.z
+master_data$tot_F <- master_data$fcover_00.z - master_data$fcover_51.z
+master_datatot_AI <- master_data$AI_00.z - master_data$AI_51.z
+
+
+mod1 <- lm(master_data$tot_abundance ~ master_data$tot_F * master_datatot_AI * master_data$PC1)
+summary(mod)
+
+#abbundace and traits 
+abundance <- master_data$tpa_2014.z 
+habitat_ammount_1951 <- master_data$fcover_51.z 
+habitat_ammount_2000 <- master_data$fcover_00.z 
+connectivity_1951 <- master_data$AI_51.z 
+connectivity_2000 <- master_data$AI_00.z 
+PC1  <- master_data$PC1
+PC2 <- master_data$PC2
+
+
+mod51 <- lm(abundance ~ habitat_ammount_1951 * connectivity_1951 *PC1) 
+
+mod00 <- lm(abundance ~ habitat_ammount_2000 * connectivity_2000 *PC1) 
+
+mod51_2 <- lm(abundance ~ habitat_ammount_1951 * connectivity_1951 *PC2) 
+
+mod51_2<- lm(abundance ~ habitat_ammount_2000 * connectivity_2000 *PC2) 
+
+mod_all <-  lm(abundance ~ habitat_ammount_1951 * 
+                      connectivity_1951 *
+                      habitat_ammount_2000 * 
+                      connectivity_2000 
+                      *PC1) 
+     
+
+
+
+
+
+mod00 <- lm(master_data$tpa_2014.z ~ 
+             master_data$fcover_00.z *
+             master_data$AI_00.z *
+             master_data$PC1)
+
+mod51_2 <- lm(master_data$tpa_2014.z ~ 
+              master_data$fcover_51.z *
+              master_data$AI_51.z *
+              master_data$PC2) 
+
+mod00_2 <- lm(master_data$tpa_2014.z ~ 
+              master_data$fcover_00.z *
+              master_data$AI_00.z *
+              master_data$PC2)
+
+
+
+
+
+
+             
+             
+             
+
+#try to look at the interactions 
+mod4 <- lm(master_data$tpa_2014.z ~ 
+             master_data$fcover_51.z +
+             master_data$AI_51.z +
+             master_data$fcover_51.z * master_data$PC1 +
+             master_data$AI_51.z * master_data$PC1)
+
+
+
+
+
+
+
+
+
+           
+          
+           
+           
+             
+             
+             
 
 
 
@@ -87,76 +226,6 @@ legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-####SEE VARIATION IN ABBUNDANCE 
-
-#make a matrix of the to see general trends in species abundance change 
-A_mat <- Abco[, c(4,6,8,9)]
-matplot(t(A_mat), type='l', lty=1)
-
-#plot abbundance at the start and the and of the time period 
-plot(log10(A_mat$tpa_2004)+1.5, log10(A_mat$tpa_2014)+2)
-abline(lm(log10(A_mat$tpa_2014)~ log10(A_mat$tpa_2004)))
-
-#simple regression of abbundnace change 
-#make a matrix with only the abundnace data
-A_mat <- Abco[, c(3,4,6,8,9)]
-#change column names 
-colnames(A_mat) <- c('CODE','2004','2009','2014','2019')
-#transform data into long format 
-A_mat <- A_mat %>%
-  gather(key = "time", value = "TPA", "2004", "2009", "2014", "2019")
-A_mat$CODE <- as.factor(A_mat$CODE)
-A_mat$time <- as.numeric(A_mat$time)
-str(A_mat)
-# fit the linear t model 
-lm_A_mat <- lm(A_mat$TPA ~ A_mat$time, data=A_mat)
-summary(lm_A_mat)
-
-lm_A_Sp <- lm(A_mat$TPA~ A_mat$CODE, data=A_mat)
-summary(lm_A_Sp)
-#save the model coefficents and intercept for each species 
-res_lm_A_Sp<-res_lm_A_Sp[["coefficients"]]
-coeffiecents <- as.data.frame(res_lm_A_Sp)
-
-
-#repeated measure anova 
-# Gather columns of TPA into long format
-# Convert id and time into factor variables
-#make a spreadsheet with only the TPA values 
-A_mat <- Abco[, c(3,4,6,8,9)]
-# Gather columns of TPA into long format i have exluded some of the years
-#for too few data mabe aggregate the data? 
-# Convert id and time into factor variables
-
-#sumamry statistics 
-A_mat  %>%
-  group_by(time) %>%
-  get_summary_stats(TPA, type = "mean_sd")
-#visualize data --> there is not realy a fluctiation between years 
-boxplot(log(TPA) ~time, A_mat)
-
-#check for outliers 
-A_mat %>%
-  group_by(time) %>%
-  identify_outliers(TPA)
-#check normality assumptions 
-A_mat %>%
-  group_by(time) %>%
-  shapiro_test(TPA)
-#runn the repeated measure anova 
-res.aov <- anova_test(data = A_mat, dv = TPA, wid = CODE, within = time)
-get_anova_table(res.aov)
 
 
 

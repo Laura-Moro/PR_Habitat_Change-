@@ -109,15 +109,17 @@ df_tot_change <-as.data.frame(tot_change)
 #make a data frame of forets cover at the different time frames 
 F_cover <- cbind(df_fcover_51, df_fcover_77, df_fcover_91, df_fcover_00, df_tot_change)
 write.csv(F_cover, "Data/Derived/Forest_Cover.csv")
+F_cover <- read.csv("Data/Derived/Forest_Cover.csv") 
+
 
 #transform the dataframe into a matrix 
 F_mat <- as.matrix(F_cover[2:5]*0.2025)
 #change row and column names 
-rownames(F_mat) <- names_pred 
+rownames(F_mat) <- F_cover$X
 colnames(F_mat) <- c(1951, 1977, 1991, 2000)
 
 #plot total forest cover change 
-matplot(t(F_mat), type='l', lty=1, xaxt='n', xlab = "Time (years)", ylab = "Suitable Habitat (km2)", cex.lab=2, cex.axis=1.8)
+matplot(t(F_mat), type='l', lty=1, xaxt='n', xlab = "Time (years)", ylab = "climaticaly suitable Habitat (km2)", cex.lab=2, cex.axis=1.8)
 axis(side=1, at= c(1, 2, 3, 4), labels = c(1951, 1977, 1991, 2000), cex.axis=1.8)
 
 
