@@ -70,9 +70,8 @@ IMP_trait2 <-as.data.frame(IMP_trait2)
 IMP_trait2 <- tibble::rownames_to_column(IMP_trait2, "Species")
 
 
-
-
-
+IMP_trait2 <- filter(IMP_trait2, IMP_trait2$Species %in% IMP_trait$Species)
+plot(IMP_trait2$seed_mass, IMP_trait$seed_mass)
 
 
 
