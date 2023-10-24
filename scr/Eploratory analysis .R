@@ -39,7 +39,9 @@ res.mod1 <- summary(mod1, se= 'boot')
 #par(mfrow=c(1,3))
 
 nd <- data.frame("tot_change.std"=seq(-2,3,length.out=155),
-                 "fcover_51.std"=rep(mean(df_f$fcover_51.std),155))
+                 #BOB: You can simply pass a single value instead of repeating like this
+                 #"fcover_51.std"=rep(mean(df_f$fcover_51.std),155))
+                 "fcover_51.std"=mean(df_f$fcover_51.std))
                  
 pred <-predict.rq(mod1, newdata = nd, type= percentile)
 
@@ -47,35 +49,42 @@ plot(df_f$tot_change.std , df_f$tpa_2014.z , pch = 16,
     main = " Abundace ~ suitable habitat change",
     xlab = " Suitable habitat change",
     ylab = " log Abundance (TPA)")
-abline(df_f$tot_change.std, pred)
+
+# BOB: You cannot use 'abline' like this - you need to use 'lines'
+# abline(df_f$tot_change.std, pred)
+lines(nd$tot_change.std, pred)
 
 
-#model 2 
-mod2<- rq(df_f$tpa_2014.z~ 
-            df_f$fcover_51.std + 
-            df_f$tot_change.std + 
-            df_f$tot_change.std*df_f$PC1 , data=df_f, tau = 0.95)
+# model 2 
+# BOB: you had df_f$... in the variable names. So, then the variable names in the model are saved as "df_f$..." but you were naming the variables in your new data without the "df_f$" prefix.  Since you specify the data in the rq() call, you do not need to include this prefix.
+mod2<- rq(tpa_2014.z~ 
+            fcover_51.std + 
+            tot_change.std + 
+            tot_change.std * PC1 , data=df_f, tau = 0.95)
 res.mod2 <- summary(mod2, se= 'boot')
 
-nd_l <- data.frame("tot_change.std"=seq(-2,3,length.out=155),
-                 "PC1"=rep((-2.223796), 155))
+nd_l <- data.frame("fcover_51.std"=mean(df_f$fcover_51.std),
+                   "tot_change.std"=seq(-2,3,length.out=155),
+                   "PC1"=-2.223796)
 
-nd_h<- data.frame("tot_change.std"=seq(-2,3,length.out=155), 
-                  "PC1"=rep((7.783721), 155))
+nd_h <- data.frame("fcover_51.std"=mean(df_f$fcover_51.std),
+                  "tot_change.std"=seq(-2,3,length.out=155), 
+                  "PC1"=7.783721)
 
-pred_l <-predict.rq(mod2, newdata = nd_l,type= percentile )
-pred_h<-predict.rq(mod2, newdata = nd_h, type= percentile)
+pred_l <- predict.rq(mod2, newdata = nd_l)
+pred_h <- predict.rq(mod2, newdata = nd_h)
 
-
-plot(df_f$tot_change.std, df_f$tpa_2014.z, data=df_f, pch = 16,
+plot(df_f$tot_change.std, df_f$tpa_2014.z, pch = 16,
      main = " Abundace ~ forest cover change",
      xlab = " Suitanle habitat change",
      ylab = " log Species Abundance (TPA)")
-abline(df_f$tot_change.std, pred_l)
-abline(df_f$tot_change.stdp, pred_h)
+
+# BOB: Again here, you were using 'abline()' whereas you should do it like this
+lines(nd_l$tot_change.std, pred_l)
+lines(nd_h$tot_change.std, pred_h)
 
 
-
+# BOB: I have not gone past this point...
 
 mod5 <-  rq(df_f$tpa_2014.z ~  df_f$fcover_51.std + df_f$tot_change.std + df_f$D_change.std, data=df_f, tau = 0.95)
 res.mod5 <- summary(mod, se= pred_l)
