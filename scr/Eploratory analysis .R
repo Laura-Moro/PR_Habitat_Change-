@@ -41,7 +41,7 @@ res.mod1 <- summary(mod1, se= 'boot')
 nd <- data.frame("tot_change.std"=seq(-2,3,length.out=155),
                  "fcover_51.std"=rep(mean(df_f$fcover_51.std),155))
                  
-pred <-predict(mod1, newdata = nd, stepfun = FALSE)
+pred <-predict.rq(mod1, newdata = nd, type= percentile)
 
 plot(df_f$tot_change.std , df_f$tpa_2014.z , pch = 16,
     main = " Abundace ~ suitable habitat change",
@@ -63,8 +63,8 @@ nd_l <- data.frame("tot_change.std"=seq(-2,3,length.out=155),
 nd_h<- data.frame("tot_change.std"=seq(-2,3,length.out=155), 
                   "PC1"=rep((7.783721), 155))
 
-pred_l <-predict.rq(mod2, newdata = nd_l)
-pred_h<-predict.rq(mod2, newdata = nd_h)
+pred_l <-predict.rq(mod2, newdata = nd_l,type= percentile )
+pred_h<-predict.rq(mod2, newdata = nd_h, type= percentile)
 
 
 plot(df_f$tot_change.std, df_f$tpa_2014.z, data=df_f, pch = 16,
