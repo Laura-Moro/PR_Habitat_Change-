@@ -24,7 +24,6 @@ head(PR_Trees_sp)
 View(PR_Trees_sp)
 
 #Abundnce Data are saved in Results/FIA
-
 FIA_abbundance <- write.csv(PR_Trees_sp, "Data/FIA/FIA_abundnace.csv")
 
 

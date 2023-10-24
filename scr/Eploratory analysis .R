@@ -1,204 +1,196 @@
 #exploratory analysis FAI Abundance data
 library(quantreg)
+library(ggplot2)
+
 
 #import data 
-AFF <- read.csv("Data/Derived/Abundance_Fcover_AI.csv", sep = ";")
-master_data <-read.csv("Data/Derived/Master_data.csv")
+df_f <-read.csv("Data/Derived/master_f.csv")
+df_uf <- read.csv("Data/Derived/master_uf.csv")
 
-##Plot different variables against abbundance
 #tranfdorm forest cover abbundance in km2 each grid cell of the raster was 450 m resolution 
-AFF$fcover_51 <- AFF$fcover_51*0.2025
-AFF$fcover_00 <- AFF$fcover_00*0.2025
-AFF$tot_change <-AFF$tot_change*0.2025
+#df$fcover_51 <- df$fcover_51*0.2025
+#df$fcover_00 <- df$fcover_00*0.2025
+#df$tot_change <-df$tot_change*0.2025
 
-tot_AI <- AFF$AI_00 - AFF$AI_51
+#transform Data
+df_f$tpa_2014.z <- log(df_f$tpa_2014)
+df_f$fcover_51.std<- as.vector(scale(df_f$fcover_51))
+df_f$tot_change.std <- as.vector(scale(df_f$tot_change))
+df_f$D_51.std <- as.vector(scale(df_f$D_51))
+df_f$PC1.std <- as.vector(scale(df_f$PC1))
 
-#make a correlation matrix of our variables 
+cor(df_f$fcover_51.std, df_f$tot_change.std)
+cor(df_f$tot_change.std, df_f$D_51.std)
+cor(df_f$fcover_51.std, df_f$D_51.std)
 
-#log transform Data
-AFF$tpa_2004.z <- log(AFF$tpa_2004)
-AFF$tpa_2014.z <- log(AFF$tpa_2014)
-abundance <- AFF$tpa_2014.z - AFF$tpa_2004.z
+hist(df_f$fcover_51)
+hist(df_f$fcover_51.std)
+hist(df_f$tot_change)
+hist(df_f$tot_change.std)
+hist(df_f$D_51)
+hist(df_f$D_51.std)
+hist(df_f$PC1)
+hist(df_f$PC1.std)
 
 #Run a quantile regression Abundace ~ forest cover 1951
-fitAF_51<- rq( AFF$tpa_2014.z ~ AFF$fcover_51,  data=AFF, tau = 0.95)
+mod1 <- rq(tpa_2014.z ~ fcover_51.std + tot_change.std, data=df_f, tau = 0.95)
+res.mod1 <- summary(mod1, se= 'boot')
 
-model.null = rq(AFF$tpa_2014.z ~ 1,
-                data = AFF,
-                tau = 0.95)
-#look at the P-value of the model 
-anova(fitAF_51, model.null)
+#par(mfrow=c(1,3))
 
-#plot the quantile regression Abundace ~ forest cover 1951
-plot(AFF$tpa_2014.z ~ AFF$fcover_51, data=AFF, pch = 16,
-     main = " Abundace ~ forest cover 1951",
-     xlab = " Habitat amount 1951",
+nd <- data.frame("tot_change.std"=seq(-2,3,length.out=155),
+                 "fcover_51.std"=rep(mean(df_f$fcover_51.std),155))
+                 
+pred <-predict(mod1, newdata = nd, stepfun = FALSE)
+
+plot(df_f$tot_change.std , df_f$tpa_2014.z , pch = 16,
+    main = " Abundace ~ suitable habitat change",
+    xlab = " Suitable habitat change",
+    ylab = " log Abundance (TPA)")
+abline(df_f$tot_change.std, pred)
+
+
+#model 2 
+mod2<- rq(df_f$tpa_2014.z~ 
+            df_f$fcover_51.std + 
+            df_f$tot_change.std + 
+            df_f$tot_change.std*df_f$PC1 , data=df_f, tau = 0.95)
+res.mod2 <- summary(mod2, se= 'boot')
+
+nd_l <- data.frame("tot_change.std"=seq(-2,3,length.out=155),
+                 "PC1"=rep((-2.223796), 155))
+
+nd_h<- data.frame("tot_change.std"=seq(-2,3,length.out=155), 
+                  "PC1"=rep((7.783721), 155))
+
+pred_l <-predict.rq(mod2, newdata = nd_l)
+pred_h<-predict.rq(mod2, newdata = nd_h)
+
+
+plot(df_f$tot_change.std, df_f$tpa_2014.z, data=df_f, pch = 16,
+     main = " Abundace ~ forest cover change",
+     xlab = " Suitanle habitat change",
      ylab = " log Species Abundance (TPA)")
-abline(rq((AFF$tpa_2014.z) ~ AFF$fcover_51, tau = 0.95, data=AFF), col = "Red")
-abline(lm(AFF$tpa_2014.z  ~ AFF$fcover_51, data=AFF), col = "blue")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-#Run a quantile regression Abundance ~ forest cover 2000
-fitAF_00<- rq(AFF$tpa_2014.z ~ AFF$fcover_00, data=AFF, tau = 0.95)
-
-model.null = rq(AFF$tpa_2014.z ~ 1,
-                data = AFF,
-                tau = 0.95)
-#look at the P-value of the model 
-anova(fitAF_00, model.null)
-
-
-#plot the quadratic regression 
-plot(AFF$tpa_2014.z~ AFF$fcover_00, data=AFF, pch = 16, 
-     main = " Abundace ~ forest cover 2000",
-     xlab = " Habitat amount 2000",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(AFF$tpa_2014.z ~ AFF$fcover_00, tau = 0.95, data=AFF), col = "red")
-abline(lm(AFF$tpa_2014.z  ~ AFF$fcover_00, data=AFF), col = "blue")
-legend("bottomright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-#quantile regression of Abundnace ~ variation in habbitat 
-fitAF<- rq(AFF$tpa_2014.z ~ AFF$tot_change, data=AFF, tau = 0.95)
-
-model.null = rq(AFF$tpa_2014.z ~ 1,
-                data = AFF,
-                tau = 0.95)
-#look at the P-value of the model 
-anova(fitAF, model.null)
-
-#plot the quadratic regression 
-plot((AFF$tpa_2014.z) ~ AFF$tot_change, data=AFF, pch = 16, 
-     main = " Abundace 2014 ~  Habitat change -1951-2000 ",
-     xlab = "  Habitat change -1951-2000",
-     ylab = "Abundace 2014 ")
-abline(rq(AFF$tpa_2014.z  ~ AFF$tot_change, tau = 0.95, data= AFF), col = "red")
-abline(lm(AFF$tpa_2014.z  ~ AFF$tot_change, data= AFF), col = "blue")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-
-#Run a quantile regression Abundance ~ Fragmentation 1951
-fitAI_51<- rq(AFF$tpa_2014.z ~ AFF$AI_51, data=AFF, tau = 0.95)
-anova(fitAI_51, model.null)
-
-#plot the quadratic regression 
-plot(AFF$tpa_2014.z ~ AFF$AI_51, data=AFF, pch = 16, 
-     main = " Abundace ~ Connectivity 1951",
-     xlab = " Habitat Connectivity 1951",
-     ylab = "log Species Abundance (TPA) ")
-abline(rq(AFF$tpa_2014.z ~ AFF$AI_51, tau = 0.95, data=AFF), col = "red")
-abline(lm(AFF$tpa_2014.z  ~ AFF$AI_51, data= AFF), col = "blue")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-
-#Run a quantile regression Abundance ~ Fragmentation 2000
-fitAI_00<- rq(AFF$tpa_2014.z ~ AFF$AI_00, data=AFF, tau = 0.95)
-anova(fitAI_00, model.null)
-
-#plot the quadratic regression 
-plot(AFF$tpa_2014.z ~ AFF$AI_00, data=AFF, pch = 16, 
-     main = " Abundace ~ Connectivity 2000",
-     xlab = " Habitat Connectivity 2000",
-     ylab = "Species Abundance (TPA) 2014 ")
-abline(rq(AFF$tpa_2014.z ~ AFF$AI_00, tau = 0.95, data=AFF), col = "red")
-abline(rq(AFF$tpa_2014.z  ~ AFF$AI_00, tau = 0.5 ,data= AFF), col = "blue")
-legend("topright", legend = c("rq","lm"), col = c("red", "blue"), lty = 2)
-
-#scale data 
-AFF$tpa_2014.z <- scale(AFF$tpa_2014.z)
-AFF$AI_51.z <- scale(AFF$AI_51)
-AFF$AI_00.z<- scale(AFF$AI_00)
-AFF$fcover_51.z <- scale(AFF$fcover_51)
-AFF$fcover_00.z <- scale(AFF$fcover_00)
-tot_AI <- AFF$AI_00.z - AFF$AI_51.z
-tot_F <- AFF$fcover_00.z - AFF$fcover_51.z
-
-#interaction between abbundance and connectivity 
-Fit_int_AIF51<- lm(AFF$tpa_2014.z ~ AFF$AI_51.z * AFF$fcover_51.z)
-Fit_int_AIF00<- lm(AFF$tpa_2014.z ~ AFF$AI_00.z *AFF$fcover_00.z)
-
-mod1 <- lm(abundance ~ tot_AI* tot_F * master_data$PC1)
-summary(mod1)
-
-
-#log transform and scale 
-master_data$tpa_2014.z <- log10(master_data$tpa_2014)
-master_data$tpa_2014.z <- scale(master_data$tpa_2014.z)
-master_data$tpa_2004.z <- log10(master_data$tpa_2004)
-master_data$tpa_2004.z <- scale(master_data$tpa_2004.z)
-master_data$fcover_51.z <- scale(master_data$fcover_51)
-master_data$fcover_00.z <- scale(master_data$fcover_00)
-master_data$AI_51.z <- scale(master_data$AI_51)
-master_data$AI_00.z <- scale(master_data$AI_00)
-
-
-master_data$tot_abundance <- master_data$tpa_2004.z - master_data$tpa_2014.z
-master_data$tot_F <- master_data$fcover_00.z - master_data$fcover_51.z
-master_datatot_AI <- master_data$AI_00.z - master_data$AI_51.z
-
-
-mod1 <- lm(master_data$tot_abundance ~ master_data$tot_F * master_datatot_AI * master_data$PC1)
-summary(mod)
-
-#abbundace and traits 
-abundance <- master_data$tpa_2014.z 
-habitat_ammount_1951 <- master_data$fcover_51.z 
-habitat_ammount_2000 <- master_data$fcover_00.z 
-connectivity_1951 <- master_data$AI_51.z 
-connectivity_2000 <- master_data$AI_00.z 
-PC1  <- master_data$PC1
-PC2 <- master_data$PC2
-
-
-mod51 <- lm(abundance ~ habitat_ammount_1951 * connectivity_1951 *PC1) 
-
-mod00 <- lm(abundance ~ habitat_ammount_2000 * connectivity_2000 *PC1) 
-
-mod51_2 <- lm(abundance ~ habitat_ammount_1951 * connectivity_1951 *PC2) 
-
-mod51_2<- lm(abundance ~ habitat_ammount_2000 * connectivity_2000 *PC2) 
-
-mod_all <-  lm(abundance ~ habitat_ammount_1951 * 
-                      connectivity_1951 *
-                      habitat_ammount_2000 * 
-                      connectivity_2000 
-                      *PC1) 
-     
+abline(df_f$tot_change.std, pred_l)
+abline(df_f$tot_change.stdp, pred_h)
 
 
 
 
+mod5 <-  rq(df_f$tpa_2014.z ~  df_f$fcover_51.std + df_f$tot_change.std + df_f$D_change.std, data=df_f, tau = 0.95)
+res.mod5 <- summary(mod, se= pred_l)
 
-mod00 <- lm(master_data$tpa_2014.z ~ 
-             master_data$fcover_00.z *
-             master_data$AI_00.z *
-             master_data$PC1)
+mod6 <-  rq(df_f$tpa_2014.z ~  
+              df_f$fcover_51.std + 
+              df_f$tot_change.std + 
+              df_f$D_change.std +
+              df_f$PC1+
+              df_f$PC1 * df_f$tot_change.std +
+              df_f$D_change.std * df_f$tot_change.std,
+              data=df_f, tau = 0.95)
+res.mod6 <- summary(mod6, se= 'boot')
 
-mod51_2 <- lm(master_data$tpa_2014.z ~ 
-              master_data$fcover_51.z *
-              master_data$AI_51.z *
-              master_data$PC2) 
 
-mod00_2 <- lm(master_data$tpa_2014.z ~ 
-              master_data$fcover_00.z *
-              master_data$AI_00.z *
-              master_data$PC2)
+# will all of the trait imputed data 
+
+#transform Data
+df_uf$tpa_2014.z <- log(df_uf$tpa_2014)
+df_uf$tpa_2014.std <- scale(df_uf$tpa_2014.z)
+df_uf$fcover_51.std<- scale(df_uf$fcover_51)
+df_uf$tot_change.std <- scale(df_uf$tot_change)
+df_uf$D_change <- (df_uf$D_00 - df_uf$D_51)
+df_uf$D_change.std <- scale(df_uf$D_change)
+df_uf$PC1.std <- scale(df_uf$PC1)
+
+#Run a quantile regression Abundace ~ forest cover 1951
+mod3 <- rq(df_uf$tpa_2014.z ~  df_uf$fcover_51.std + df_uf$tot_change.std , data=df_uf, tau = 0.95)
+res.mod3 <- summary(mod3, se= 'boot')
+
+mod <- rq(df_uf$tpa_2014.z ~  df_uf$fcover_51.std + df_uf$tot_change.std + df_uf$D_change.std, data=df_uf, tau = 0.95)
+
+
+plot(df_uf$tpa_2014.z ~ df_uf$tot_change.std + df_uf$fcover_51.std, data=df_uf, pch = 16,
+     main = " Abundace ~ suitable habitat change",
+     xlab = " Suitable habitat change",
+     ylab = " log Abundance (TPA)")
+par(xpd=FALSE)
+abline(rq(df_uf$tpa_2014.z ~ df_uf$tot_change.std, tau = 0.95, data=df_uf),col = "Red")
+abline(rq(df_uf$tpa_2014.z  ~ df_uf$fcover_51.std,  tau = 0.95, data=df_uf), col = "blue")
+legend("bottomright", legend = c("suitable habitat change","habitat in 1951"), col = c("red", "blue"), lty = 2)
+
+mod4<- rq(df_uf$tpa_2014.z~ 
+            df_uf$fcover_51.std + 
+            df_uf$tot_change.std + 
+            df_uf$PC1 +
+            df_uf$tot_change.std*df_uf$PC1 , data=df_uf, tau = 0.95)
+res.mod4 <- summary(mod4, se= 'boot')
+
+plot(df_uf$tpa_2014 ~ df_uf$tot_change, data=df_uf, pch = 16,
+     main = " Abundace ~ forest cover change",
+     xlab = " Suitanle habitat change",
+     ylab = " log Species Abundance (TPA)" , log='y')
+par(xpd = "")
+abline(rq(df_uf$tpa_2014~ df_uf$tot_change, tau = 0.95, data=df_uf, log='y'), col = "Red")
+abline(rq(df_uf$tpa_2014  ~ df_uf$fcover_51,  tau = 0.95, data=df_uf), col = "blue")
+abline(rq(df_uf$tpa_2014  ~ df_uf$PC1,  tau = 0.95, data=df_uf), col = "blue")
+
+mod5 <- rq(df_uf$tpa_2014.z ~  df_uf$fcover_51.std + df_uf$tot_change.std + df_uf$D_change.std, data=df_uf, tau = 0.95)
+
+mod6 <_ 
 
 
 
 
 
 
-             
-             
-             
 
-#try to look at the interactions 
-mod4 <- lm(master_data$tpa_2014.z ~ 
-             master_data$fcover_51.z +
-             master_data$AI_51.z +
-             master_data$fcover_51.z * master_data$PC1 +
-             master_data$AI_51.z * master_data$PC1)
 
+
+
+
+
+
+
+
+#assing names 
+A <- df$tpa_2014.z
+dF <- df$tot_change
+F51 <- df$fcover_51
+PC1 <- df$PC1
+PC2 <- df$PC2
+
+#only forest cover 
+mod2 <- lm(A ~ dF * F51)
+summary(mod2)
+
+#interaction with the traits (PC1)
+mod3 <- lm(A ~ F51+ dF+ PC1+ dF*PC1 + F51*PC1)
+summary(mod3)
+plot(dF,A) #,cex= PC1)
+abline(lm(A ~ dF, data=df),col = "blue")
+abline(lm(A ~ F51,data=df), col=" Red")
+abline(lm(A ~ PC1,data=df))
+legend("topright", legend = c("F51","df","PC1"), col = c("red", "blue", "black"), lty = 2)
+
+
+
+#try with untrasformed data 
+mod5 <- lm(df$tpa_2014~   df$tot_change + 
+             df$fcover_51+ 
+             df$PC1+
+             df$tot_change * df$PC1 +
+             df$fcover_51 * df$PC1 +
+             df$tot_change * df$fcover_51)
+summary(mod5)
+
+
+
+
+
+
+
+
+            
 
 
 

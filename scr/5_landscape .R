@@ -2,6 +2,7 @@ library(raster)
 library(rgdal)
 library(sp)
 library(landscapemetrics)
+library(dplyr)
 
 #lanscape evaluation for each species 
 #1 select the forest cove
@@ -60,17 +61,21 @@ newproj <- "+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333
 # reproject the model the threshold maps 
 Pred_stack_rp <- projectRaster(Pred_stack, crs=newproj, method='ngb')
 
+names(Pred_stack_rp) <- names_pred
+
 #save the re projected raster to use in the Landscape section 
-writeRaster(Pred_stack_rp, "/Users/laumo791/Documents/PR/C1/Results/F_stack/t_stack.tif", format= 'GTiff')
+#writeRaster(Pred_stack_rp, "/Users/laumo791/Documents/PR/C1/Results/F_stack/Pred.tif", format= 'GTiff', overwrite=TRUE)
+
+#Pred_stack_rp <- raster("/Users/laumo791/Documents/PR/C1/Results/F_stack/Pred.tif")
 
 #asssing names to the raster stack layers 
-names(Pred_stack_rp) <- names_pred
+#names(Pred_stack_rp) <- names_pred
 
 #here we resample the forest maps 
 f_rs <- raster::resample( f, Pred_stack_rp , method="ngb")
 
 #overaly by multipy the forest cover with the species models one forest map at the time 
-Pred_f51 <- f_rs[[1]]* Pred_stack_rp 
+Pred_f51 <- f_rs[[1]]* Pred_stack_rp
 Pred_f77 <- f_rs[[2]]* Pred_stack_rp
 Pred_f91 <- f_rs[[3]]* Pred_stack_rp
 Pred_f00 <- f_rs[[4]]* Pred_stack_rp
@@ -93,20 +98,20 @@ D_Pred_f77 <-lsm_l_enn_mn(Pred_f77)
 D_Pred_f91 <-lsm_l_enn_mn(Pred_f91)
 D_Pred_f00 <-lsm_l_enn_mn(Pred_f00)
 
-
-
 #make a data frame and add names to the species Ai 
 AI_total <- bind_cols(F_cover$X,AI_Pred_f51$value, AI_Pred_f77$value, AI_Pred_f91$value, AI_Pred_f00$value)
 as.data.frame(AI_total)
 
 #make a dataframe of the neerest neighboir mean distance 
-D_total <- bind_cols(F_cover$X, D_Pred_f51$value, D_Pred_f77$value, D_Pred_f91$value, D_Pred_f00$value)
+D_total <- bind_cols(names_pred, D_Pred_f51$value, D_Pred_f77$value, D_Pred_f91$value, D_Pred_f00$value)
 colnames(D_total) <- c("Code", "D_51", "D_71", "D_91", "D_00")
 as.data.frame(D_total)
 
 #Save the the AI 
 write.csv(AI_total, "Data/Derived/AI_total.csv")
 AI_total <- read.csv("Data/Derived/AI_total.csv", sep=";")
+write.csv(D_total,"Data/Derived/D_total.csv")
+
 
 #plot ovverall change in ha
 AI_mat <- as.matrix(AI_total[2:5])
