@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 Data/SDM_predictions
+Data/SDM_threshold
+Data/FIA/bob
+Data/2022-12-07_ENMeval_results
