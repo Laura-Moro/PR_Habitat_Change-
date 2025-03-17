@@ -4,8 +4,11 @@
 .Ruserdata
 Data/SDM_predictions
 Data/SDM_threshold
+Data/SDM_predictions-noFIA
+Data/SDM_threshold-noFIA
 Data/FIA/bob
 Data/2022-12-07_ENMeval_results
+Data/2025-03-17_ENMeval_results-noFIA
 .Rproj.user/shared/notebooks/paths
 .Rhistory
 .DS_Store
