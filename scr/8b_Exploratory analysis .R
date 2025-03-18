@@ -5,10 +5,10 @@ library(bayesQR)
 # library(Brq)
 
 ## Import data 
-df <- read.csv("Data/Derived/6b-output-20250314.csv")
+df <- read.csv("Data/Derived/6b-output-20250318.csv")
 
 ## Load fragmentation data
-lm <- read.csv("Data/Derived/Landscape-agg-metrics-20240828.csv")
+lm <- read.csv("Data/Derived/Landscape-agg-metrics-20250318.csv")
 
 ## Select fragmentation metric(s) to add to analysis data
 unique(lm$metric)
@@ -47,7 +47,9 @@ df <- df[df$F.z < 5,]
 
 ## Look at correlations
 cor(df$fcover_51.z, df$tot_change.z)
-cor(df$fcover_51.z, df$tot_change.z)
+cor(df$fcover_51_raw.z, df$tot_change_raw.z)
+cor(df$fcover_51_raw.z, df$old_change_raw.z)
+cor(df$tot_change_raw.z, df$old_change_raw.z)
 cor(df$tot_change.z, df$F.z)
 cor(df$fcover_51.z, df$F.z)
 cor(df$fcover_51.z, df$total_hab.z)
@@ -55,22 +57,88 @@ cor(df$fcover_51.z, df$total_hab.z)
 ## Plot variable distributions
 hist(df$tpa2014)
 hist(scale(log10(df$tpa2014.z)))
-hist(df$fcover_51)
 hist(df$fcover_51.z)
-hist(df$tot_change)
 hist(df$tot_change.z)
-hist(df$F)
+hist(df$tot_change_raw.z)
 hist(df$F.z)
 hist(df$pca1)
 
-
+par(mfrow=c(2,2), mar=c(4,4,1,1))
 plot(df$old_change_raw.z, df$tpa_diam2_2014)
+plot(df$tot_change_raw.z, df$tpa_diam2_2014)
+plot(df$fcover_51_raw.z, df$tpa_diam2_2014)
+plot(df$F.z, df$tpa_diam2_2014)
 
-plot(tpa_diam2_2014 ~ old_change_raw.z, data=df)
-m1 <- rq(tpa_diam2_2014 ~ old_change_raw.z + fcover_51_raw.z + F.z, data=df, tau=0.95)
-# m1 <- rq(tpa_diam2_2014 ~ old_change_raw.z, data=df, tau=0.95)
+
+plot(tpa_diam2_2014 ~ fcover_51_raw.z, data=df, log='y')
+# m1 <- rq(tpa_diam2_2019 ~ df$old_change_raw.z + F.z, data=df, tau=0.95)
+m1 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z, data=df, tau=0.95)
 summary(m1, se='boot')
+
+
+plot(tpa_diam2_2014 ~ old_change_raw.z, data=df, log='')
+m1 <- rq(tpa_diam2_2014 ~ old_change_raw.z + F.z, data=df, tau=0.95)
+m2 <- rq(tpa_diam2_2014 ~ tot_change_raw.z + F.z, data=df, tau=0.95)
+m3 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z + F.z, data=df, tau=0.95)
+
+m1 <- rq(tpa_diam2_2014 ~ old_change.z + F.z, data=df, tau=0.95)
+m2 <- rq(tpa_diam2_2014 ~ tot_change.z + F.z, data=df, tau=0.95)
+m3 <- rq(tpa_diam2_2014 ~ fcover_51.z + F.z, data=df, tau=0.95)
+
+# m1 <- rq(tpa_diam2_2014 ~ tot_change_raw.z + fcover_51_raw.z + F.z, data=df, 
+#          tau=0.95)
+
+m1 <- rq(tpa_diam2_2014 ~ fcover_51.z + tot_change.z + F.z, data=df, tau=0.95)
+
+plot(tpa_diam2_2014 ~ fcover_51.z, data=df, log='')
+
+abline(m1, col='blue')
+library(jtools)
+summ(m1, se='boot', vifs=T)
+
+
+
+m1 <- lm(log(tpa_diam2_2014) ~ tot_change_raw.z + fcover_51_raw.z + F.z, data=df)
+
+p1 <- lm(tpa_diam2_2014 ~ tot_change_raw.z, data=df)
+plot(tpa_diam2_2014 ~ tot_change_raw.z, data=df)
+summary(p1, se='boot')
+abline(p1)
+
+plot(df$tot_change_raw, df$fcover_51_raw)
+cor(df$tot_change_raw, df$fcover_51_raw)
+plot(df$old_change_raw, df$fcover_51_raw)
+cor(df$old_change_raw, df$fcover_51_raw)
+
+
+
+
+par(mfrow=c(1,3), mar=c(4,4,1,1))
+plot(tpa_diam2_2014 ~ tot_change_raw.z, data=df)
+m1 <- rq(tpa_diam2_2014 ~ tot_change_raw.z + fcover_51_raw.z + F.z, data=df, tau=0.95)
+
+nd <- data.frame(tot_change_raw.z=df$tot_change_raw.z,
+                 fcover_51_raw.z=mean(df$fcover_51_raw.z),
+                 F.z=mean(df$F.z))
+
+ypred <- predict(m1, newdata=nd)
+
+lines(nd$tot_change_raw.z, ypred, col='red')
+
+
+plot(tpa_diam2_2014 ~ fcover_51_raw.z, data=df)
+m1 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z + old_change_raw.z + F.z, data=df, tau=0.95)
 abline(m1)
+
+plot(tpa_diam2_2014 ~ fcover_51_raw.z, data=df)
+m1 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z + old_change_raw.z + F.z, data=df, tau=0.95)
+abline(m1)
+
+
+
+plot(df$old_change_raw.z, df$tot_change.z)
+plot(df$old_change_raw.z, df$fcover_51_raw.z)
+plot(df$tot_change.z, df$fcover_51_raw.z)
 
 
 
@@ -271,8 +339,8 @@ plot(X, y, main="", cex=.6, xlab="X")
 
 # Run a quantile regression Abundace ~ forest cover 1951
 
-mod1 <- rq(tpa_2014 ~ fcover_51.std + tot_change.std , data=df, tau=0.95)
-summary(mod1)
+mod1 <- rq(tpa2014 ~ fcover_51_raw.z + tot_change_raw.z + F.z, data=df, tau=0.95)
+summary(mod1, se='boot')
 
 mod0 <- rq(tpa_2014 ~ 1, data=df, tau = 0.95)
 summary(mod0) 

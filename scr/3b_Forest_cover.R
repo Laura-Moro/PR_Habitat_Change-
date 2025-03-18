@@ -51,19 +51,21 @@ for(i in 1:4){
 ### READ IN SDM LAYERS AND PROCESS--> habitats gains and losses for each species 
 #1 Re-project binary maps  
 
-# Import the tresholded maps 
-Pred_stack_raw <- stack(list.files(path = "Data/SDM_predictions", 
+# Import the continuous maps 
+Pred_stack_raw <- stack(list.files(path = "Data/SDM_predictions-noFIA", 
                                pattern='.tif', all.files=TRUE, full.names=T))
 
-# Import the tresholded maps 
-Pred_stack <- stack(list.files(path = "Data/SDM_threshold", 
+# Import the treshholded maps 
+Pred_stack <- stack(list.files(path = "Data/SDM_threshold-noFIA", 
                    pattern='.tif', all.files=TRUE, full.names=T))
 
-# Assign the names of the species 
-names(Pred_stack_raw) <- gsub(".tif", "", list.files(path = "Data/SDM_predictions", 
-                                                 pattern='.tif', all.files=TRUE, full.names=F))
-names(Pred_stack) <- gsub(".tif", "", list.files(path = "Data/SDM_threshold", 
-                                          pattern='.tif', all.files=TRUE, full.names=F))
+# Assign the names of the species
+names(Pred_stack_raw) <- gsub(".tif", "", 
+                              list.files(path = "Data/SDM_predictions-noFIA",
+                                         pattern='.tif', all.files=TRUE, full.names=F))
+names(Pred_stack) <- gsub(".tif", "", 
+                          list.files(path = "Data/SDM_threshold-noFIA",
+                                     pattern='.tif', all.files=TRUE, full.names=F))
 
 # Projection system of the Helmer maps 
 newproj <- "+proj=lcc +lat_0=17.8333333333333 +lon_0=-66.4333333333333 
@@ -79,8 +81,8 @@ Pred_stack_raw_rp <- crop(mask(Pred_stack_raw_rp, pr), pr)
 Pred_stack_rp <- crop(mask(Pred_stack_rp, pr), pr)
 
 # Save the reprojected raster to use in the Landscape section 
-writeRaster(Pred_stack_raw_rp, "Data/Derived/raw_stack.tif", format="GTiff")
-writeRaster(Pred_stack_rp, "Data/Derived/thresholded_stack.tif", format="GTiff")
+writeRaster(Pred_stack_raw_rp, "Data/Derived/raw_stack-noFIA.tif", format="GTiff")
+writeRaster(Pred_stack_rp, "Data/Derived/thresholded_stack-noFIA.tif", format="GTiff")
 
 
 # Resample the forest maps 
@@ -110,15 +112,15 @@ names(Pred_f91) <- names(Pred_stack_rp)
 names(Pred_f00) <- names(Pred_stack_rp)
 
 # Save rasters of predicted habitat maps
-writeRaster(Pred_f51_raw, "Data/Derived/Pred_f51_raw.tif", format="GTiff")
-writeRaster(Pred_f77_raw, "Data/Derived/Pred_f77_raw.tif", format="GTiff")
-writeRaster(Pred_f91_raw, "Data/Derived/Pred_f91_raw.tif", format="GTiff")
-writeRaster(Pred_f00_raw, "Data/Derived/Pred_f00_raw.tif", format="GTiff")
+writeRaster(Pred_f51_raw, "Data/Derived/Pred_f51_raw-noFIA.tif", format="GTiff")
+writeRaster(Pred_f77_raw, "Data/Derived/Pred_f77_raw-noFIA.tif", format="GTiff")
+writeRaster(Pred_f91_raw, "Data/Derived/Pred_f91_raw-noFIA.tif", format="GTiff")
+writeRaster(Pred_f00_raw, "Data/Derived/Pred_f00_raw-noFIA.tif", format="GTiff")
 
-writeRaster(Pred_f51, "Data/Derived/Pred_f51.tif", format="GTiff")
-writeRaster(Pred_f77, "Data/Derived/Pred_f77.tif", format="GTiff")
-writeRaster(Pred_f91, "Data/Derived/Pred_f91.tif", format="GTiff")
-writeRaster(Pred_f00, "Data/Derived/Pred_f00.tif", format="GTiff")
+writeRaster(Pred_f51, "Data/Derived/Pred_f51-noFIA.tif", format="GTiff")
+writeRaster(Pred_f77, "Data/Derived/Pred_f77-noFIA.tif", format="GTiff")
+writeRaster(Pred_f91, "Data/Derived/Pred_f91-noFIA.tif", format="GTiff")
+writeRaster(Pred_f00, "Data/Derived/Pred_f00-noFIA.tif", format="GTiff")
 
 # Sum all of the pixels that were forest in 1951, 1977, 1991, 2000
 fcover_51_raw <- cellStats(Pred_f51_raw, 'sum')
@@ -153,7 +155,7 @@ F_cover <- data.frame(sp=names(Pred_stack_rp),
 
 rownames(F_cover) <- NULL
 
-write.csv(F_cover, "Data/Derived/3b-output-20250314.csv", row.names = F)
+write.csv(F_cover, "Data/Derived/3b-output-20250318.csv", row.names = F)
 
 
 

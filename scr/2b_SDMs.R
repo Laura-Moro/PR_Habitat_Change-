@@ -22,41 +22,45 @@ oc <- oc[oc$SOURCE!="FIA",]
 envs[[1]] <- as.factor(envs[[1]])
 
 # RUNNING THE MODELS using ENMeval (maxnet)
-for (sp in 2:length(unique(oc$CODE))){
+for (sp in 1:length(unique(oc$CODE))){
   
-  # This line to skip some species that don't work for some reason...
-  if(!sp %in% c(253,387,472,515,541)){
+  # This line to deal with some species that don't work with hinge features...
+  problem_spp <- c(275, 513, 539, 541) # (INGLAU, SURMAR, TETCRO, TETURB)
+
+  # These lines are to to select the background points for each species which in our case are the all the other occurrence points 
+  focsp <- unique(oc$CODE)[sp]
+  occs <- oc[oc$CODE==focsp,2:1]
+  bg <- oc[oc$CODE!=focsp,2:1]
   
-    # These lines are to to select the background points for each species which in our case are the all the other occurrence points 
-    focsp <- unique(oc$CODE)[sp]
-    occs <- oc[oc$CODE==focsp,2:1]
-    bg <- oc[oc$CODE!=focsp,2:1]
+  #to see on which species the model is working on! 
+  message(paste('working on', focsp))
+  print(Sys.time())
+  
+  if(nrow(occs)>10){
     
-    #to see on which species the model is working on! 
-    message(paste('working on', focsp))
-    print(Sys.time())
-    
-    if(nrow(occs)>10){
-      
-      if(nrow(occs)>=15){
-        partition <- "checkerboard2" #if species have more than 15 occurence points use "checkerboard2" data partition
-      } else {
-        partition <- "jackknife" #otherwise use jackknife
-      }
-      
-# HOW ARE 'DUPLICATE' RECORDS BEING TREATED? (AS IN, OCCS IN THE SAME GRID CELL?)
-      mod <- ENMevaluate(occs=occs, envs=envs, bg=bg, 
-                         algorithm='maxnet', 
-                         partitions=partition,
-                         categoricals="GEO",
-                         partition.settings=list(aggregation.factor=c(5,5)),
-                         tune.args=list(fc = c("L","LQ","LQH","H"), rm = 1:5),
-                         parallel=T)
-      # tune.args=list(fc = c("L","H"), rm = 1:5))
-      
-      filename <- paste0("Data/2025-03-17_ENMeval_results-noFIA/", focsp, ".RDA")
-      saveRDS(mod, file=filename)
+    if(nrow(occs)>=15){
+      partition <- "checkerboard2" #if species have more than 15 occurence points use "checkerboard2" data partition
+    } else {
+      partition <- "jackknife" #otherwise use jackknife
     }
+    
+    if(!sp %in% problem_spp) {
+      ps <- list(fc = c("L","LQ","LQH","H"), rm = 1:5)
+    } else {
+      ps <- list(fc = c("L","LQ"), rm = 1:5)
+    }
+    # HOW ARE 'DUPLICATE' RECORDS BEING TREATED? (AS IN, OCCS IN THE SAME GRID CELL?)
+    mod <- ENMevaluate(occs=occs, envs=envs, bg=bg, 
+                       algorithm='maxnet', 
+                       partitions=partition,
+                       categoricals="GEO",
+                       partition.settings=list(aggregation.factor=c(5,5)),
+                       tune.args=ps,
+                       parallel=T)
+    # tune.args=list(fc = c("L","H"), rm = 1:5))
+    
+    filename <- paste0("Data/2025-03-17_ENMeval_results-noFIA/", focsp, ".RDA")
+    saveRDS(mod, file=filename)
   }
 }
 
@@ -67,7 +71,7 @@ for (sp in 2:length(unique(oc$CODE))){
 modfiles <- list.files("Data/2025-03-17_ENMeval_results-noFIA", full.names = TRUE)
 
 # Create an empty for the results
-res <- list()
+res <- list(length=length(modfiles))
 
 # Select the models with the the lowest omission rate at 10p and the highest AUC
 for(i in seq_along(modfiles)){
@@ -78,8 +82,8 @@ for(i in seq_along(modfiles)){
 
   # Select the models with the minimum omission rate and the maximum AUC
   tmpres <- mod@results %>%
-    filter(or.10p.avg == min(or.10p.avg)) %>%
-    filter(auc.val.avg == max(auc.val.avg))
+    filter(or.10p.avg == min(or.10p.avg, na.rm=T)) %>%
+    filter(auc.val.avg == max(auc.val.avg, na.rm=T))
 
   # Select the models with the continuous Boyce index
   # tmpres <- mod@results[which(mod@results$cbi.train == max(mod@results$cbi.train, na.rm=T)),][1,]
@@ -116,6 +120,6 @@ for(i in seq_along(modfiles)){
 resall <- do.call(rbind, res)
 
 # Save model outputs 
-write.csv(resall, "Derived/SDM-mod_output.csv")
+write.csv(resall, "Data/Derived/SDM-mod_output-noFIA.csv")
 
 

@@ -7,10 +7,10 @@ library(dplyr)
 ### Landscape evaluation for each species 
 
 ## Read the species habitat maps 
-Pred_f51 <- stack("Data/Derived/Pred_f51.tif")
-Pred_f77 <- stack("Data/Derived/Pred_f77.tif")
-Pred_f91 <- stack("Data/Derived/Pred_f91.tif")
-Pred_f00 <- stack("Data/Derived/Pred_f00.tif")
+Pred_f51 <- stack("Data/Derived/Pred_f51-noFIA.tif")
+Pred_f77 <- stack("Data/Derived/Pred_f77-noFIA.tif")
+Pred_f91 <- stack("Data/Derived/Pred_f91-noFIA.tif")
+Pred_f00 <- stack("Data/Derived/Pred_f00-noFIA.tif")
 
 ## Check if the maps are valid
 check_landscape(Pred_f51)
@@ -45,7 +45,7 @@ lm <- lm[,c("sp", "year", "metric", "value")]
 # lm[lm$year==1951 & lm$metric=='ai',]
 
 ## Save full landscape metrics aggregation data
-write.csv(lm, file="Data/Derived/Landscape-agg-metrics-20240828.csv", row.names=F)
+write.csv(lm, file="Data/Derived/Landscape-agg-metrics-20250318.csv", row.names=F)
 
 
 

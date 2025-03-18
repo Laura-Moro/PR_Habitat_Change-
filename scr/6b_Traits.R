@@ -15,7 +15,7 @@ traits_E <- read.csv("Data/Traits/Species_Traits.csv")
 # Our species mean trait data
 Traits_fix <- read.csv("Data/Traits/Fixed_traits.csv", sep = ";" )
 # Output from previous script to add trait data into
-data <- read.csv("Data/Derived/4b-output-20250314.csv")
+data <- read.csv("Data/Derived/4b-output-20250318.csv")
 
 ## Get binomial species name
 Sp_list$binom <- tolower(paste(Sp_list$GENUS, Sp_list$SPECIES, sep=" "))
@@ -130,5 +130,5 @@ data$pca1_pi <- res.ind_pi[match(data$species, rownames(res.ind_pi)),1]
 data$pca2_pi <- res.ind_pi[match(data$species, rownames(res.ind_pi)),2]
 
 # Save data 
-write.csv(data, "Data/Derived/6b-output-20250314.csv")
+write.csv(data, "Data/Derived/6b-output-20250318.csv")
 

@@ -5,7 +5,7 @@ library(sf)
 Sp_list <- read.csv("Data/Traits/PR_Trees_species_list.csv")
 
 # Load data output from previous script
-indata <- read.csv("Data/Derived/3b-output-20250314.csv") 
+indata <- read.csv("Data/Derived/3b-output-20250318.csv") 
 
 # Load PR outline shapefile
 pr <- st_read("Data/PR_shapes/outline/PR_outline_Project.shp")
@@ -19,19 +19,18 @@ prfia <- clipFIA(readFIA("Data/FIA/bob"), mask=pr, mostRecent=F)
 # Estimate total population size by species
 (pr_tpa <- tpa(prfia, bySpecies=TRUE, totals=TRUE))
 
-
 # Compare abundance estimates from default TPA ('live') with 'growing stock'
 pr_tpa2 <- pr_tpa[match(paste(pr_tpa_gs$YEAR, pr_tpa_gs$COMMON_NAME), 
                         paste(pr_tpa$YEAR, pr_tpa$COMMON_NAME)),]
-plot(pr_tpa2$TPA, pr_tpa_gs$TPA, log='xy')
-abline(0,1,col='blue', lwd=3)
+# plot(pr_tpa2$TPA, pr_tpa_gs$TPA, log='xy')
+# abline(0,1,col='blue', lwd=3)
 
 # Compare abundance estimates from default TPA ('live') with 'seedlings'
 pr_tpa_seedlings <- seedling(prfia, bySpecies=TRUE, totals=TRUE)
 pr_tpa3 <- pr_tpa[match(paste(pr_tpa_seedlings$YEAR, pr_tpa_seedlings$COMMON_NAME), 
                         paste(pr_tpa$YEAR, pr_tpa$COMMON_NAME)),]
-plot(pr_tpa3$TPA, pr_tpa_seedlings$TPA, log='xy')
-abline(0,1,col='blue', lwd=3)
+# plot(pr_tpa3$TPA, pr_tpa_seedlings$TPA, log='xy')
+# abline(0,1,col='blue', lwd=3)
 
 
 # Growing stock: live stems > 5 in. DBH which contain at least one 8 ft merchantable log
@@ -56,7 +55,7 @@ pr_tpa$TPA_seedlings <- pr_tpa_seedlings$TPA[match(paste(pr_tpa$YEAR,
                                                    paste(pr_tpa_seedlings$YEAR, 
                                                          pr_tpa_diam2$COMMON_NAME))]
 
-plot(pr_tpa[,c("TPA","TPA_gs","TPA_diam2","TPA_seedlings")])
+# plot(pr_tpa[,c("TPA","TPA_gs","TPA_diam2","TPA_seedlings")])
 
 
 ### Format species names 
@@ -106,4 +105,4 @@ indata$nPlots2014 <- pr_tpa_2014$nPlots_TREE[match(indata$sp, pr_tpa_2014$code)]
 indata$nPlots2019 <- pr_tpa_2019$nPlots_TREE[match(indata$sp, pr_tpa_2019$code)]
 
 # Save analysis data with abundance data
-write.csv(indata, "Data/Derived/4b-output-20250314.csv", row.names = F)
+write.csv(indata, "Data/Derived/4b-output-20250318.csv", row.names = F)
