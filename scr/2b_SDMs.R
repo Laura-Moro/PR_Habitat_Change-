@@ -64,7 +64,7 @@ for (sp in 1:length(unique(oc$CODE))){
   }
 }
 
-# MODEL SELECTION 
+### MODEL SELECTION 
 
 # Load mod files #mod = enmeval result object 
 # modfiles <- list.files("Data/2022-12-07_ENMeval_results", full.names = TRUE)
@@ -75,7 +75,7 @@ res <- list(length=length(modfiles))
 
 # Select the models with the the lowest omission rate at 10p and the highest AUC
 for(i in seq_along(modfiles)){
-  print(i)
+  message(i)
   
   #red in the model files mod
   mod <- readRDS(modfiles[i]) 
@@ -121,5 +121,6 @@ resall <- do.call(rbind, res)
 
 # Save model outputs 
 write.csv(resall, "Data/Derived/SDM-mod_output-noFIA.csv")
+
 
 

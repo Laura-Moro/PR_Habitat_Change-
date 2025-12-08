@@ -5,10 +5,10 @@ library(bayesQR)
 # library(Brq)
 
 ## Import data 
-df <- read.csv("Data/Derived/6b-output-20250318.csv")
+df <- read.csv("Data/Derived/6b-output-20250829.csv")
 
 ## Load fragmentation data
-lm <- read.csv("Data/Derived/Landscape-agg-metrics-20250318.csv")
+lm <- read.csv("Data/Derived/Landscape-agg-metrics-20250829.csv")
 
 ## Select fragmentation metric(s) to add to analysis data
 unique(lm$metric)
@@ -47,8 +47,12 @@ df <- df[df$F.z < 5,]
 
 ## Look at correlations
 cor(df$fcover_51.z, df$tot_change.z)
-cor(df$fcover_51_raw.z, df$tot_change_raw.z)
+plot(df$fcover_51_raw.z, df$tot_change_raw.z)
 cor(df$fcover_51_raw.z, df$old_change_raw.z)
+plot(df$fcover_51_raw.z, df$old_change_raw.z)
+
+plot(df$fcover_51, df$fcover_51_raw)
+
 cor(df$tot_change_raw.z, df$old_change_raw.z)
 cor(df$tot_change.z, df$F.z)
 cor(df$fcover_51.z, df$F.z)
@@ -77,9 +81,109 @@ summary(m1, se='boot')
 
 
 plot(tpa_diam2_2014 ~ old_change_raw.z, data=df, log='')
-m1 <- rq(tpa_diam2_2014 ~ old_change_raw.z + F.z, data=df, tau=0.95)
-m2 <- rq(tpa_diam2_2014 ~ tot_change_raw.z + F.z, data=df, tau=0.95)
-m3 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z + F.z, data=df, tau=0.95)
+
+
+
+df$prop_change.z <- scale(df$tot_change_raw / df$total_hab_raw)
+
+
+# Species with more habitat area in 1951 have higher abundance in 2014
+summary(m0 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z, data=df, tau=0.95))
+# jtools::summ(m0, se='boot', vif=T)
+
+summary(m0 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z 
+                 + tot_change_raw.z
+                   , data=df, tau=0.95))
+
+
+m0b <- rq(tpa2014.z ~ fcover_51_raw.z, data=df, tau=0.5)
+summary(rq(tpa2014.z ~ fcover_51_raw.z, data=df, tau=0.5))
+summary(lm(tpa2014.z ~ fcover_51_raw.z, data=df))
+
+par(mfrow=c(2,2), mar=c(4,4,1,1))
+
+plot(df$fcover_51_raw.z, df$tpa2014, log='y')
+summary(m1 <- lm(log10(tpa2014) ~ fcover_51_raw.z, data=df))
+abline(m1)
+
+
+plot(df$tot_change_raw.z, df$tpa2014, log='y')
+summary(m1 <- lm(log10(tpa2014) ~ tot_change_raw.z + fcover_51_raw.z, data=df))
+abline(m1)
+
+car::vif(m1)
+plot(m1)
+
+abline(m0)
+abline(m0b, col="red")
+segments(df$total_hab_raw.z[!is.na(df$tpa2014.z)], 
+         df$tpa2014.z[!is.na(df$tpa2014.z)],
+         df$total_hab_raw.z[!is.na(df$tpa2014.z)], 
+         m0b$fitted.values, 
+         col='blue', lwd=0.5)
+
+plot(df$total_hab_raw.z, df$tpa2014.z)
+abline(m0)
+abline(m0b, col="red")
+segments(df$total_hab_raw.z[!is.na(df$tpa2014.z)], 
+         df$tpa2014.z[!is.na(df$tpa2014.z)],
+         df$total_hab_raw.z[!is.na(df$tpa2014.z)], 
+         m0b$fitted.values, 
+         col='blue', lwd=0.5)
+
+# df$resids <- NA
+# df$resids[!is.na(df$tpa2014.z)] <- m0b$residuals
+# 
+# summary(rq(resids ~  tot_change_raw.z 
+#            + pca1_pi
+#            + tot_change_raw.z  * pca1_pi, 
+#            data=df, tau=0.95))
+
+# plot(df$tot_change_raw.z, df$resids)
+
+# summary(lm(resids ~  tot_change_raw.z 
+#            + pca1_pi
+#            + tot_change_raw.z  * pca1_pi, 
+#            data=df))
+
+
+summary(rq(tpa2014.z ~ fcover_51_raw.z 
+           + F.z 
+           + pca1_pi 
+           + fcover_51_raw.z:pca1_pi, data=df, tau=0.95))
+
+
+# Compute the 2014 abundance as a proportion of the 1951 habitat (trees per habitat area in 1951)
+df$testy <- scale(df$tpa2014/df$fcover_51_raw)
+
+# Do trees with higher density based on habitat available in 1951 have even higher abundance if they gained more habitat?
+# Does this depend on species traits?
+summary(m0 <- rq(testy ~ tot_change_raw.z 
+                 + pca1_pi
+                 + tot_change_raw.z  * pca1_pi, 
+                 data=df, tau=0.95))
+
+summary(m0 <- rq(tpa2014 ~ fcover_51_raw.z 
+                 + prop_change.z
+                 + F.z 
+                 + pca1_pi
+                 + fcover_51_raw.z  * pca1_pi, 
+                 data=df, tau=0.95))
+
+
+summary(m0 <- rq(tpa2014 ~ tot_change_raw.z 
+                 + F.z 
+                 + pca1_pi
+                 + tot_change_raw.z  * pca1_pi, 
+                 data=df, tau=0.95))
+
+# jtools::summ(m0, se='boot', vifs=T)
+
+
+
+summary(m1 <- rq(tpa_diam2_2014 ~ old_change_raw.z + F.z, data=df, tau=0.95))
+summary(m2 <- rq(tpa_diam2_2014 ~ tot_change_raw.z + F.z, data=df, tau=0.95))
+summary(m3 <- rq(tpa_diam2_2014 ~ fcover_51_raw.z + F.z, data=df, tau=0.95))
 
 m1 <- rq(tpa_diam2_2014 ~ old_change.z + F.z, data=df, tau=0.95)
 m2 <- rq(tpa_diam2_2014 ~ tot_change.z + F.z, data=df, tau=0.95)
