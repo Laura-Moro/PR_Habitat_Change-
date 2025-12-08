@@ -20,3 +20,6 @@ scr/.DS_Store
 .Rproj.user/shared/notebooks/paths
 Data/.DS_Store
 Data/Derived/.DS_Store
+/Data/PACAT_areas_protegidas2018
+Data/.DS_Store
+.Rhistory
