@@ -17,6 +17,13 @@ Traits_fix <- read.csv("Data/Traits/Fixed_traits.csv", sep = ";" )
 # Output from previous script to add trait data into
 data <- read.csv("Data/Derived/3b-output-20251022.csv")
 
+## Load fragmentation data
+lm <- read.csv("Data/Derived/Landscape-agg-metrics-20251022.csv")
+
+## Select fragmentation metric(s) to add to analysis data
+data$enn_51 <- lm[lm$year==1951 & lm$metric=='enn_mn',]
+data$enn_00 <- lm[lm$year==2000 & lm$metric=='enn_mn',]
+
 ## Get binomial species name
 Sp_list$binom <- tolower(paste(Sp_list$GENUS, Sp_list$SPECIES, sep=" "))
 Sp_list$binom <- paste0(toupper(substr(Sp_list$binom, 1, 1)), 
